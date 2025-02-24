@@ -1,4 +1,4 @@
-# Código PHP:
+# Código PHP para conexão com o banco de dados:
 ```PHP
 <?php
 $host = 'www.thyagoquintas.com.br:3306';
