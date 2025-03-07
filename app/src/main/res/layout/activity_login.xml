@@ -9,6 +9,17 @@
     app:circularflow_radiusInDP="50dp"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="643dp"
+        android:layout_height="1252dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.501"
+        app:srcCompat="@drawable/background" />
+
     <View
         android:id="@+id/view2"
         android:layout_width="358dp"
@@ -16,19 +27,20 @@
         android:background="@drawable/rounded_background"
         android:elevation="8dp"
         tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="187dp" />
+        tools:layout_editor_absoluteY="209dp" />
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="294dp"
         android:layout_height="67dp"
         android:background="#92ABD5"
+        android:elevation="10dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintStart_toStartOf="@+id/view2"
-        tools:layout_editor_absoluteY="333dp"
+        tools:layout_editor_absoluteY="365dp"
         tools:visibility="visible" />
 
     <EditText
@@ -36,12 +48,13 @@
         android:layout_width="294dp"
         android:layout_height="67dp"
         android:background="#92ABD5"
+        android:elevation="10dp"
         android:ems="10"
         android:inputType="textPassword"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintStart_toStartOf="@+id/view2"
-        tools:layout_editor_absoluteY="412dp"
+        tools:layout_editor_absoluteY="445dp"
         tools:visibility="visible" />
 
     <Button
@@ -50,12 +63,13 @@
         android:layout_height="51dp"
         android:layout_marginStart="16dp"
         android:background="#355075"
+        android:elevation="10dp"
         android:text="Button"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintHorizontal_bias="0.435"
         app:layout_constraintStart_toStartOf="@+id/view2"
-        tools:layout_editor_absoluteY="559dp"
+        tools:layout_editor_absoluteY="588dp"
         tools:visibility="visible" />
 
 
