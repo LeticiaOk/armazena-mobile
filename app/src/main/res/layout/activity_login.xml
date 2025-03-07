@@ -5,39 +5,58 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:circularflow_defaultRadius="10dp"
+    app:circularflow_radiusInDP="50dp"
     tools:context=".LoginActivity">
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="358dp"
+        android:layout_height="473dp"
+        android:background="@drawable/rounded_background"
+        android:elevation="8dp"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="187dp" />
 
     <EditText
         android:id="@+id/emailEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
+        android:layout_width="294dp"
+        android:layout_height="67dp"
+        android:background="#92ABD5"
         android:ems="10"
-        android:inputType="text"
-        android:text="Email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:inputType="textEmailAddress"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        tools:layout_editor_absoluteY="333dp"
+        tools:visibility="visible" />
 
     <EditText
         android:id="@+id/passwordEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="294dp"
+        android:layout_height="67dp"
+        android:background="#92ABD5"
         android:ems="10"
-        android:inputType="text"
-        android:text="Senha"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+        android:inputType="textPassword"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        tools:layout_editor_absoluteY="412dp"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="Entrar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+        android:layout_width="218dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="16dp"
+        android:background="#355075"
+        android:text="Button"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.435"
+        app:layout_constraintStart_toStartOf="@+id/view2"
+        tools:layout_editor_absoluteY="559dp"
+        tools:visibility="visible" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
