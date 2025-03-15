@@ -5,9 +5,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class CustomAdapter(private val dataSet: List<Produto>) :
-    RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    data class Produto (
+        val PRODUTO_ID : Int,
+        val PRODUTO_NOME : String,
+        val CATEGORIA_ID : Int,
+        val PRODUTO_PRECO : Double,
+        val PRODUTO_DESC : String
+    )
+    RecyclerView.Adapter<CustomAdapter.ViewHolder>() {    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nome: TextView = view.findViewById(R.id.nomeProduto)
         val descricao: TextView = view.findViewById(R.id.descricaoProduto)
         val valor: TextView = view.findViewById(R.id.valorProduto)

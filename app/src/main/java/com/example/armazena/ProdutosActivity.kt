@@ -12,7 +12,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class MainActivity : AppCompatActivity() {
+class ProdutoActivity : AppCompatActivity() {
+    data class Produto (
+        val PRODUTO_ID : Int,
+        val PRODUTO_NOME : String,
+        val CATEGORIA_ID : Int,
+        val PRODUTO_PRECO : Double,
+        val PRODUTO_DESC : String
+    )
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: CustomAdapter
 
@@ -40,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.170/")
+            .baseUrl("http://192.168.0.4/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
