@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.armazena.Produto
 import com.example.armazena.R
 
-class CustomAdapter(private val dataSet: List<Produto>) :
-    RecyclerView.Adapter<CustomAdapter.ViewHolder>() {    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class ProdutoAdapter(private val dataSet: List<Produto>) :
+    RecyclerView.Adapter<ProdutoAdapter.ViewHolder>() {    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nome: TextView = view.findViewById(R.id.nomeProduto)
         val descricao: TextView = view.findViewById(R.id.descricaoProduto)
         val valor: TextView = view.findViewById(R.id.valorProduto)
@@ -15,7 +15,7 @@ class CustomAdapter(private val dataSet: List<Produto>) :
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.activity_produto, viewGroup, false)
+            .inflate(R.layout.activity_produto_item, viewGroup, false)
 
         return ViewHolder(view)
     }
@@ -24,8 +24,11 @@ class CustomAdapter(private val dataSet: List<Produto>) :
         val produto = dataSet[position]
         viewHolder.nome.text = produto.PRODUTO_NOME
         viewHolder.descricao.text = produto.PRODUTO_DESC
-        viewHolder.valor.text = produto.PRODUTO_PRECO.toString()
+        viewHolder.valor.text = "R$ ${produto.PRODUTO_PRECO.toString()}"
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() : Int
+    {
+        return dataSet.size
+    }
 }
