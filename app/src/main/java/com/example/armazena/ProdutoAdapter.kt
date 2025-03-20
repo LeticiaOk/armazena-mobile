@@ -1,10 +1,10 @@
+package com.example.armazena
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.armazena.Produto
-import com.example.armazena.R
 
 class ProdutoAdapter(private val dataSet: List<Produto>) :
     RecyclerView.Adapter<ProdutoAdapter.ViewHolder>() {    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -24,7 +24,8 @@ class ProdutoAdapter(private val dataSet: List<Produto>) :
         val produto = dataSet[position]
         viewHolder.nome.text = produto.PRODUTO_NOME
         viewHolder.descricao.text = produto.PRODUTO_DESC
-        viewHolder.valor.text = "R$ ${produto.PRODUTO_PRECO.toString()}"
+        viewHolder.valor.text = "R$ %.2f".format(produto.PRODUTO_PRECO)
+
     }
 
     override fun getItemCount() : Int

@@ -1,6 +1,5 @@
 package com.example.armazena
 
-import ProdutoAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -44,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
+            .baseUrl("http://10.135.111.34/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)
