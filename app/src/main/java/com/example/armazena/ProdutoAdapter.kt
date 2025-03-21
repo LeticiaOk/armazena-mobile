@@ -1,34 +1,39 @@
+package com.example.armazena
+
+import com.example.armazena.entities.Produto
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.armazena.Produto
-import com.example.armazena.R
 
-class ProdutoAdapter(private val dataSet: List<Produto>) :
-    RecyclerView.Adapter<ProdutoAdapter.ViewHolder>() {    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nome: TextView = view.findViewById(R.id.nomeProduto)
-        val descricao: TextView = view.findViewById(R.id.descricaoProduto)
-        val valor: TextView = view.findViewById(R.id.valorProduto)
+class ProdutoAdapter(
+    private val produtos: List<Produto>) : RecyclerView.Adapter<ProdutoAdapter.ViewHolder>() {
+
+    // ViewHolder para os itens da lista
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nome: TextView = itemView.findViewById(R.id.nomeProduto)
+        val descricao: TextView = itemView.findViewById(R.id.descricaoProduto)
+        val preco: TextView = itemView.findViewById(R.id.valorProduto)
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.activity_produto_item, viewGroup, false)
-
+    // Infla o layout do item
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.activity_produto, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val produto = dataSet[position]
-        viewHolder.nome.text = produto.PRODUTO_NOME
-        viewHolder.descricao.text = produto.PRODUTO_DESC
-        viewHolder.valor.text = "R$ ${produto.PRODUTO_PRECO.toString()}"
+    // Retorna o número de itens na lista
+    override fun getItemCount(): Int {
+        return produtos.size
     }
 
-    override fun getItemCount() : Int
-    {
-        return dataSet.size
+    // Vincula os dados ao ViewHolder
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val produto = produtos[position]
+        holder.nome.text = produto.nomeProduto
+        holder.descricao.text = produto.descricaoProduto
+        holder.preco.text = "R$ ${produto.precoProduto.toString()}"
     }
 }

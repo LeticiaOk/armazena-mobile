@@ -1,8 +1,8 @@
 package com.example.armazena
 
-import ProdutoAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -17,6 +17,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.gson.annotations.SerializedName
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -44,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
+            .baseUrl("http://192.168.100.205/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)
@@ -57,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val loginResponses = response.body()!!
                     if (loginResponses.isNotEmpty()) {
-                        val intent = Intent(this@LoginActivity, ProdutoAdapter::class.java)
+                        val intent = Intent(this@LoginActivity, ProdutoActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -83,11 +84,8 @@ class LoginActivity : AppCompatActivity() {
             @Query("senha") senha: String
         ): Call<List<LoginResponse>>
     }
-
     data class LoginResponse(
-        val USUARIO_ID: Int,
-        val USUARIO_NOME: String,
-        val USUARIO_EMAIL: String,
-        val USUARIO_EMPRESA: String
+        @SerializedName("USUARIO_EMAIL") val usuarioEmail: String,
+        @SerializedName("USUARIO_SENHA") val usuarioSenha: String
     )
 }

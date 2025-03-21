@@ -1,12 +1,14 @@
-import androidx.appcompat.app.AppCompatActivity
+package com.example.armazena
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.armazena.LoginActivity
-import com.example.armazena.Produto
-import com.example.armazena.R
+import com.example.armazena.entities.Produto
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -17,26 +19,27 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
 
-class ListaProduto : AppCompatActivity() {
+class ProdutoActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProdutoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_produto_lista)
+        setContentView(R.layout.activity_produto)
 
+        // Configura a RecyclerView
         recyclerView = findViewById(R.id.recyclerViewProdutos)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-
-        // ConfiguraÇÃo do Logging Interceptor
-        val logging = HttpLoggingInterceptor { message ->
-            Log.d("OkHttp", message)
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
+        val logoutButton: Button = findViewById(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            logout()
         }
 
-        // ConfiguraÇÃo do OkHttpClient com o interceptor
+        // Configuração do Retrofit e chamada da API
+        val logging = HttpLoggingInterceptor { message -> Log.d("OkHttp", message) }
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(logging)
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -44,29 +47,35 @@ class ListaProduto : AppCompatActivity() {
             .writeTimeout(30, TimeUnit.SECONDS)
             .build()
 
-        // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
+            .baseUrl("http://192.168.100.205/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-
 
         val apiService = retrofit.create(ProdutoApiService::class.java)
         apiService.getProdutos().enqueue(object : Callback<List<Produto>> {
             override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
                 if (response.isSuccessful) {
                     val produtos = response.body() ?: emptyList()
-                    adapter = ProdutoAdapter(produtos)
-                    recyclerView.adapter = adapter
+                    recyclerView.adapter = ProdutoAdapter(produtos)
+                    for (produto in produtos) {
+                        System.out.println(produto)
+                    }
                 } else {
                     Log.e("API Error", "Response not successful. Code: ${response.code()}")
                 }
             }
+
             override fun onFailure(call: Call<List<Produto>>, t: Throwable) {
                 Log.e("API Failure", "Error fetching products", t)
             }
         })
+    }
+
+    interface ProdutoApiService {
+        @GET("/armazena_api/produto.php")
+        fun getProdutos(): Call<List<Produto>>
     }
 
     private fun logout() {
@@ -77,9 +86,5 @@ class ListaProduto : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish() // Finaliza a ProdutosActivity
-    }
-    interface ProdutoApiService {
-        @GET("/armazena_api/produto.php")
-        fun getProdutos(): Call<List<Produto>>
     }
 }
