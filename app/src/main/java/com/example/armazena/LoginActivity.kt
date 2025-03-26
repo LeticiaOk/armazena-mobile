@@ -2,7 +2,6 @@ package com.example.armazena
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -17,7 +16,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.gson.annotations.SerializedName
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -44,37 +42,63 @@ class LoginActivity : AppCompatActivity() {
     private fun blockLogin() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
+
+        // Criação da instância do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.100.205/")
+            .baseUrl("http://192.168.1.5/") // Sua URL de base
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
         val apiService = retrofit.create(ApiService::class.java)
-        val call = apiService.login(email, password)
-        call.enqueue(object : Callback<List<LoginResponse>> {
-            override fun onResponse(
-                call: Call<List<LoginResponse>>,
-                response: Response<List<LoginResponse>>
-            ) {
-                if (response.isSuccessful && response.body() != null) {
-                    val loginResponses = response.body()!!
-                    if (loginResponses.isNotEmpty()) {
-                        val intent = Intent(this@LoginActivity, ProdutoActivity::class.java)
-                        startActivity(intent)
-                        finish()
+
+
+        try {
+            val call = apiService.login(email, password)
+
+
+            call.enqueue(object : Callback<List<LoginResponse>> {
+                override fun onResponse(
+                    call: Call<List<LoginResponse>>,
+                    response: Response<List<LoginResponse>>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val loginResponses = response.body()!!
+                        if (loginResponses.isNotEmpty()) {
+                            val intent = Intent(this@LoginActivity, ListaProduto::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Usuário ou senha inválidos",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     } else {
-                        Toast.makeText(this@LoginActivity, "Usuário ou senha inválidos",
-                            Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Erro no login: ${response.message()}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(this@LoginActivity, "Erro no login",
-                        Toast.LENGTH_LONG).show()
                 }
-            }
-            override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, "Erro: ${t.message}",
-                    Toast.LENGTH_LONG).show()
-            }
-        })
+
+                override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
+
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Erro de conexão: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+        } catch (e: Exception) {
+            Toast.makeText(
+                this@LoginActivity,
+                "Erro inesperado: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     interface ApiService {
@@ -84,8 +108,12 @@ class LoginActivity : AppCompatActivity() {
             @Query("senha") senha: String
         ): Call<List<LoginResponse>>
     }
+
     data class LoginResponse(
-        @SerializedName("USUARIO_EMAIL") val usuarioEmail: String,
-        @SerializedName("USUARIO_SENHA") val usuarioSenha: String
+        val USUARIO_ID: Int,
+        val USUARIO_NOME: String,
+        val USUARIO_EMAIL: String,
+        val USUARIO_SENHA: String,
+        val USUARIO_EMPRESA: String
     )
 }
