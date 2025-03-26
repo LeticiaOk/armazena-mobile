@@ -1,13 +1,11 @@
+package com.example.armazena
+
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.armazena.LoginActivity
-import com.example.armazena.Produto
-import com.example.armazena.ProdutoAdapter
-import com.example.armazena.R
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -47,7 +45,7 @@ class ListaProduto : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.135.111.34/")
+            .baseUrl("http://192.168.1.5/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

@@ -42,37 +42,63 @@ class LoginActivity : AppCompatActivity() {
     private fun blockLogin() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
+
+        // Criação da instância do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.135.111.34/")
+            .baseUrl("http://192.168.1.5/") // Sua URL de base
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
         val apiService = retrofit.create(ApiService::class.java)
-        val call = apiService.login(email, password)
-        call.enqueue(object : Callback<List<LoginResponse>> {
-            override fun onResponse(
-                call: Call<List<LoginResponse>>,
-                response: Response<List<LoginResponse>>
-            ) {
-                if (response.isSuccessful && response.body() != null) {
-                    val loginResponses = response.body()!!
-                    if (loginResponses.isNotEmpty()) {
-                        val intent = Intent(this@LoginActivity, ProdutoAdapter::class.java)
-                        startActivity(intent)
-                        finish()
+
+
+        try {
+            val call = apiService.login(email, password)
+
+
+            call.enqueue(object : Callback<List<LoginResponse>> {
+                override fun onResponse(
+                    call: Call<List<LoginResponse>>,
+                    response: Response<List<LoginResponse>>
+                ) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val loginResponses = response.body()!!
+                        if (loginResponses.isNotEmpty()) {
+                            val intent = Intent(this@LoginActivity, ListaProduto::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Usuário ou senha inválidos",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     } else {
-                        Toast.makeText(this@LoginActivity, "Usuário ou senha inválidos",
-                            Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Erro no login: ${response.message()}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(this@LoginActivity, "Erro no login",
-                        Toast.LENGTH_LONG).show()
                 }
-            }
-            override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
-                Toast.makeText(this@LoginActivity, "Erro: ${t.message}",
-                    Toast.LENGTH_LONG).show()
-            }
-        })
+
+                override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
+
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Erro de conexão: ${t.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            })
+        } catch (e: Exception) {
+            Toast.makeText(
+                this@LoginActivity,
+                "Erro inesperado: ${e.message}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     interface ApiService {
