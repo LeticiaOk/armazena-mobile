@@ -7,15 +7,12 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -25,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -34,71 +32,53 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         val loginButton: Button = findViewById(R.id.loginButton)
+
         loginButton.setOnClickListener {
-            blockLogin()
+            login()
         }
     }
 
-    private fun blockLogin() {
+    private fun login() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
 
-        // Criação da instância do Retrofit
+        if (email.isEmpty() || password.isEmpty()) {
+            showToast("Preencha todos os campos")
+            return
+        }
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.5/") // Sua URL de base
+            .baseUrl("http://192.168.1.5/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
+        val call = apiService.login(email, password)
 
+        call.enqueue(object : Callback<List<LoginResponse>> {
+            override fun onResponse(call: Call<List<LoginResponse>>, response: Response<List<LoginResponse>>) {
+                if (response.isSuccessful) {
+                    val loginResponses = response.body()
 
-        try {
-            val call = apiService.login(email, password)
-
-
-            call.enqueue(object : Callback<List<LoginResponse>> {
-                override fun onResponse(
-                    call: Call<List<LoginResponse>>,
-                    response: Response<List<LoginResponse>>
-                ) {
-                    if (response.isSuccessful && response.body() != null) {
-                        val loginResponses = response.body()!!
-                        if (loginResponses.isNotEmpty()) {
-                            val intent = Intent(this@LoginActivity, ListaProduto::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(
-                                this@LoginActivity,
-                                "Usuário ou senha inválidos",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                    if (!loginResponses.isNullOrEmpty()) {
+                        startActivity(Intent(this@LoginActivity, ListaProduto::class.java))
+                        finish()
                     } else {
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Erro no login: ${response.message()}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        showToast("Usuário ou senha inválidos")
                     }
+                } else {
+                    showToast("Erro no login: ${response.message()}")
                 }
+            }
 
-                override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
+                showToast("Erro de conexão: ${t.message}")
+            }
+        })
+    }
 
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Erro de conexão: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            })
-        } catch (e: Exception) {
-            Toast.makeText(
-                this@LoginActivity,
-                "Erro inesperado: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
-        }
+    private fun showToast(message: String) {
+        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_LONG).show()
     }
 
     interface ApiService {
@@ -113,7 +93,6 @@ class LoginActivity : AppCompatActivity() {
         val USUARIO_ID: Int,
         val USUARIO_NOME: String,
         val USUARIO_EMAIL: String,
-        val USUARIO_SENHA: String,
         val USUARIO_EMPRESA: String
     )
 }
