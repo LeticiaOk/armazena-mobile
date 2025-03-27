@@ -53,8 +53,8 @@ class ListaProduto : AppCompatActivity() {
 
 
         val apiService = retrofit.create(ProdutoApiService::class.java)
-        apiService.getProdutos().enqueue(object : Callback<List<Produto>> {
-            override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
+        apiService.getProdutos().enqueue(object : Callback<ProdutoResponse> {
+            override fun onResponse(call: Call<ProdutoResponse>, response: Response<ProdutoResponse>) {
                 if (response.isSuccessful) {
                     val produtos = response.body() ?: emptyList()
                     adapter = ProdutoAdapter(produtos)
@@ -82,4 +82,6 @@ class ListaProduto : AppCompatActivity() {
         @GET("/armazena_api/produto.php")
         fun getProdutos(): Call<List<Produto>>
     }
+    data class ProdutoResponse(
+        val produtos: List<Produto>)
 }

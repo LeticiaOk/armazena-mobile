@@ -1,15 +1,17 @@
 package com.example.armazena
 
-import com.example.armazena.entities.Produto
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.armazena.entities.Produto
 
 class ProdutoAdapter(private val dataSet: List<Produto>) :
-    RecyclerView.Adapter<ProdutoAdapter.ViewHolder>() {    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    RecyclerView.Adapter<ProdutoAdapter.ViewHolder>() {
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nome: TextView = view.findViewById(R.id.nomeProduto)
         val descricao: TextView = view.findViewById(R.id.descricaoProduto)
         val valor: TextView = view.findViewById(R.id.valorProduto)
@@ -18,7 +20,6 @@ class ProdutoAdapter(private val dataSet: List<Produto>) :
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.activity_produto_item, viewGroup, false)
-
         return ViewHolder(view)
     }
 
@@ -28,11 +29,9 @@ class ProdutoAdapter(private val dataSet: List<Produto>) :
         viewHolder.nome.text = produto.PRODUTO_NOME
         viewHolder.descricao.text = produto.PRODUTO_DESC
         viewHolder.valor.text = "R$ %.2f".format(produto.PRODUTO_PRECO)
-
     }
 
-    override fun getItemCount() : Int
-    {
+    override fun getItemCount(): Int {
         return dataSet.size
     }
 }
