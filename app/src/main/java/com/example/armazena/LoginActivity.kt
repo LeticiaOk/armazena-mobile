@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.1.4/armazena_api/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
