@@ -45,7 +45,7 @@ class LoginActivity : AppCompatActivity() {
 
         // Criação da instância do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.5/") // Sua URL de base
+            .baseUrl("http://192.168.0.43/") // Sua URL de base
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                     if (response.isSuccessful && response.body() != null) {
                         val loginResponses = response.body()!!
                         if (loginResponses.isNotEmpty()) {
-                            val intent = Intent(this@LoginActivity, ListaProduto::class.java)
+                            val intent = Intent(this@LoginActivity, ProdutoAdapter::class.java)
                             startActivity(intent)
                             finish()
                         } else {

@@ -3,10 +3,10 @@ package com.example.armazena.entities
 import com.google.gson.annotations.SerializedName
 
 public data class Produto (
-    @SerializedName("PRODUTO_ID") val idProduto: Int,
-    @SerializedName("PRODUTO_NOME") val nomeProduto: String,
-    @SerializedName("CATEGORIA_ID") val idCategoria: Int,
-    @SerializedName("PRODUTO_PRECO") val precoProduto: Double,
-    @SerializedName("PRODUTO_DESC") val descricaoProduto: String
+    val PRODUTO_ID: Int,
+    val PRODUTO_NOME: String,
+    val CATEGORIA_ID: Int,
+    val PRODUTO_PRECO: Double,
+    val PRODUTO_DESC: String
 )
 

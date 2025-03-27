@@ -2,7 +2,6 @@ package com.example.armazena.entities
 
 import com.google.gson.annotations.SerializedName
 
-
 public data class Usuario (
     @SerializedName("USUARIO_ID") val idUsuario: Int,
     @SerializedName("USUARIO_NOME") val nomeUsuario: String,

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.armazena.entities.Produto
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -45,7 +46,7 @@ class ListaProduto : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.5/")
+            .baseUrl("http://192.168.0.43/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

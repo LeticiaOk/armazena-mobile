@@ -1,5 +1,6 @@
 package com.example.armazena
 
+import com.example.armazena.entities.Produto
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
