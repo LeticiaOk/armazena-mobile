@@ -9,10 +9,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.gson.GsonBuilder
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -47,20 +49,24 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.5/")
+            .baseUrl("http://192.168.1.4/armazena_api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
         val call = apiService.login(email, password)
 
-        call.enqueue(object : Callback<List<LoginResponse>> {
-            override fun onResponse(call: Call<List<LoginResponse>>, response: Response<List<LoginResponse>>) {
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
-                    val loginResponses = response.body()
+                    val loginResponse = response.body()
 
-                    if (!loginResponses.isNullOrEmpty()) {
+                    if (loginResponse != null && !loginResponse.isNullOrEmpty()) {
                         startActivity(Intent(this@LoginActivity, ListaProduto::class.java))
                         finish()
                     } else {
@@ -71,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 showToast("Erro de conexão: ${t.message}")
             }
         })
@@ -82,17 +88,25 @@ class LoginActivity : AppCompatActivity() {
     }
 
     interface ApiService {
-        @GET("/armazena_api/login.php")
+        @POST("/armazena_api/login.php")
+        @FormUrlEncoded
         fun login(
-            @Query("usuario") usuario: String,
-            @Query("senha") senha: String
-        ): Call<List<LoginResponse>>
+            @Field("usuario") usuario: String,
+            @Field("senha") senha: String
+        ): Call<LoginResponse>
     }
 
+    // Definindo a classe LoginResponse dentro da LoginActivity
     data class LoginResponse(
         val USUARIO_ID: Int,
         val USUARIO_NOME: String,
         val USUARIO_EMAIL: String,
+        val USUARIO_SENHA: String,
         val USUARIO_EMPRESA: String
-    )
+    ) {
+        // Função de extensão para verificar se os campos estão vazios
+        fun isNullOrEmpty(): Boolean {
+            return USUARIO_NOME.isEmpty() || USUARIO_EMAIL.isEmpty() || USUARIO_SENHA.isEmpty() || USUARIO_EMPRESA.isEmpty()
+        }
+    }
 }

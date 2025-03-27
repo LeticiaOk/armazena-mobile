@@ -46,7 +46,7 @@ class ListaProduto : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
+            .baseUrl("http://192.168.1.4/armazena_api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
