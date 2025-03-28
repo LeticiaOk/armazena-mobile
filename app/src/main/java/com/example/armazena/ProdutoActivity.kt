@@ -16,12 +16,21 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
+import kotlin.jvm.java
 
 class ProdutoActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProdutoAdapter
+
+    interface ProdutoListagemApiService {
+        @GET("/armazena_api/produto.php")
+        fun getProdutos(): Call<List<Produto>>
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +45,9 @@ class ProdutoActivity : AppCompatActivity() {
             logout()
         }
 
+        listagemProdutos();
+    }
+    private fun listagemProdutos() {
         // Configuração do Retrofit e chamada da API
         val logging = HttpLoggingInterceptor { message -> Log.d("OkHttp", message) }
         logging.level = HttpLoggingInterceptor.Level.BODY
@@ -48,12 +60,12 @@ class ProdutoActivity : AppCompatActivity() {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.100.205/")
+            .baseUrl("http://192.168.0.43/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
 
-        val apiService = retrofit.create(ProdutoApiService::class.java)
+        val apiService = retrofit.create(ProdutoListagemApiService::class.java)
         apiService.getProdutos().enqueue(object : Callback<List<Produto>> {
             override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
                 if (response.isSuccessful) {
@@ -71,11 +83,6 @@ class ProdutoActivity : AppCompatActivity() {
                 Log.e("API Failure", "Error fetching products", t)
             }
         })
-    }
-
-    interface ProdutoApiService {
-        @GET("/armazena_api/produto.php")
-        fun getProdutos(): Call<List<Produto>>
     }
 
     private fun logout() {
