@@ -10,15 +10,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.armazena.LoginActivity
 import com.example.armazena.entities.Produto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.POST
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ProdutoCadastro : AppCompatActivity() {
     private lateinit var nomeProdutoEditText: EditText
@@ -26,9 +28,44 @@ class ProdutoCadastro : AppCompatActivity() {
     private lateinit var precoProdutoEditText: EditText
     private lateinit var descProdutoEditText: EditText
 
+    data class ProdutoCadastroRequest(
+        val nome_produto: String,
+        val id_categoria: Int,
+        val preco_produto: Double,
+        val desc_produto: String
+    )
+
+    data class ProdutoCadastroResponse(
+        val sucesso: Boolean,
+        val mensagem: String?,
+        val id_produto: Int?
+    )
+
     interface ProdutoCadastroApiService {
         @POST("/armazena_api/produto_cadastro.php")
-        fun cadastroProduto(@Body produtoCadastroRequest: Produto): Call<Produto>
+        fun cadastrarProduto(@Body requestBody: ProdutoCadastroRequest): Call<ProdutoCadastroResponse>
+    }
+
+    object RetrofitClient {
+        private const val BASE_URL = "http://192.168.0.43/" // Substitua pela URL base da sua API
+
+        val instance: ProdutoCadastroApiService by lazy {
+            val loggingInterceptor = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY // Mostra os logs das requisições (debug)
+            }
+
+            val client = OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build()
+
+            val retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            retrofit.create(ProdutoCadastroApiService::class.java)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,17 +102,17 @@ class ProdutoCadastro : AppCompatActivity() {
         val categoriaIdInt = try { categoriaId.toInt() } catch (e: NumberFormatException) { -1 }
         val precoProdutoDouble = try { precoProduto.toDouble() } catch (e: NumberFormatException) { -1.0 }
 
-        val produtoCadastroRequest = Produto(nomeProduto, categoriaId.toInt(), precoProduto.toDouble(), descProduto)
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val apiService = retrofit.create(ProdutoCadastroApiService::class.java)
-        val call = apiService.cadastroProduto(produtoCadastroRequest)
-        call.enqueue(object : Callback<Produto> {
+        val produtoCadastroRequest = ProdutoCadastroRequest(
+            nome_produto = nomeProduto,
+            id_categoria = categoriaId.toInt(),
+            preco_produto = precoProduto.toDouble(),
+            desc_produto = descProduto
+        )
+        val call = RetrofitClient.instance.cadastrarProduto(produtoCadastroRequest)
+        call.enqueue(object : Callback<ProdutoCadastroResponse> {
             override fun onResponse(
-                call: Call<Produto>,
-                response: Response<Produto>
+                call: Call<ProdutoCadastroResponse>,
+                response: Response<ProdutoCadastroResponse>
             ) {
                 if (response.isSuccessful && response.body() != null) {
                     val produtoCadastroResponses = response.body()
@@ -94,7 +131,7 @@ class ProdutoCadastro : AppCompatActivity() {
                     Log.e("cadastroProduto", "Erro HTTP: ${response.code()}")
                 }
             }
-            override fun onFailure(call: Call<Produto>, t: Throwable) {
+            override fun onFailure(call: Call<ProdutoCadastroResponse>, t: Throwable) {
                 Log.e("CadastroProduto", "Falha na requisição: ${t.message}")
                 runOnUiThread {
                     Toast.makeText(this@ProdutoCadastro, "Erro na conexão. Tente novamente.", Toast.LENGTH_SHORT).show()
