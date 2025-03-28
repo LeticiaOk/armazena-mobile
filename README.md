@@ -32,7 +32,7 @@ try {
 }
 ```
 
-## produto.php
+## produto.php:
 ```php
 <?php
 $host = 'www.thyagoquintas.com.br:3306';
