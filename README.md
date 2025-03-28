@@ -33,7 +33,7 @@ try {
 ```
 
 ## produto.php
-```
+```php
 <?php
 $host = 'www.thyagoquintas.com.br:3306';
 $db = 'engenharia_21';
