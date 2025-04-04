@@ -3,8 +3,6 @@ package com.example.armazena
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,10 +14,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.DELETE
+import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 import kotlin.jvm.java
 
@@ -39,11 +36,6 @@ class ProdutoActivity : AppCompatActivity() {
         // Configura a RecyclerView
         recyclerView = findViewById(R.id.recyclerViewProdutos)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        val logoutButton: Button = findViewById(R.id.logoutButton)
-        logoutButton.setOnClickListener {
-            logout()
-        }
 
         listagemProdutos();
     }
@@ -70,10 +62,7 @@ class ProdutoActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
                 if (response.isSuccessful) {
                     val produtos = response.body() ?: emptyList()
-                    recyclerView.adapter = ProdutoAdapter(produtos)
-                    for (produto in produtos) {
-                        System.out.println(produto)
-                    }
+                    recyclerView.adapter = ProdutoAdapter(produtos, this@ProdutoActivity)
                 } else {
                     Log.e("API Error", "Response not successful. Code: ${response.code()}")
                 }
@@ -84,7 +73,6 @@ class ProdutoActivity : AppCompatActivity() {
             }
         })
     }
-
     private fun logout() {
         val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         sharedPreferences.edit().clear().apply() // Remove os dados do usuário

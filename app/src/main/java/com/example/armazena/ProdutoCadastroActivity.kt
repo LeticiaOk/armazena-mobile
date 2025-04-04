@@ -10,19 +10,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.armazena.entities.Produto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ProdutoCadastro : AppCompatActivity() {
+class ProdutoCadastroActivity : AppCompatActivity() {
     private lateinit var nomeProdutoEditText: EditText
     private lateinit var categoriaProdutoEditText: EditText
     private lateinit var precoProdutoEditText: EditText
@@ -118,7 +116,7 @@ class ProdutoCadastro : AppCompatActivity() {
                     val produtoCadastroResponses = response.body()
                     if(produtoCadastroResponses != null && response.isSuccessful) {
                         Log.d("CadastroProduto", "Produto cadastrado com sucesso!")
-                        val intent = Intent(this@ProdutoCadastro, ProdutoActivity::class.java)
+                        val intent = Intent(this@ProdutoCadastroActivity, ProdutoActivity::class.java)
                         startActivity(intent)
                         finish()
                         //TODO: Mostrar feedback de sucesso ao usuário
@@ -134,7 +132,7 @@ class ProdutoCadastro : AppCompatActivity() {
             override fun onFailure(call: Call<ProdutoCadastroResponse>, t: Throwable) {
                 Log.e("CadastroProduto", "Falha na requisição: ${t.message}")
                 runOnUiThread {
-                    Toast.makeText(this@ProdutoCadastro, "Erro na conexão. Tente novamente.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ProdutoCadastroActivity, "Erro na conexão. Tente novamente.", Toast.LENGTH_SHORT).show()
                 }
             }
         })

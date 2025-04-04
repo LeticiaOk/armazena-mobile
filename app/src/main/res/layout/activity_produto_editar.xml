@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProdutoCadastroActivity">
+    tools:context=".ProdutoEditarActivity">
 
     <EditText
         android:id="@+id/nomeProdutoEditText"
@@ -66,11 +66,11 @@
         android:layout_marginHorizontal="24dp"/>
 
     <Button
-        android:id="@+id/cadastroProdutoButton"
+        android:id="@+id/EditProdutoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:text="Cadastrar"
+        android:text="Salvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descProdutoEditText" />
