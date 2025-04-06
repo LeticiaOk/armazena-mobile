@@ -1,13 +1,16 @@
-package com.example.armazena
+package com.example.armazena.activities.produto
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.armazena.R
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -16,8 +19,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.POST
+import java.util.concurrent.TimeUnit
 
 class ProdutoEditarActivity : AppCompatActivity() {
     private lateinit var nomeProdutoEditText: EditText
@@ -40,23 +43,23 @@ class ProdutoEditarActivity : AppCompatActivity() {
     )
 
     interface ProdutoEditarApiService {
-        @PUT("/armazena_api/produto_editar.php/{id}")
-        fun atualizarProduto(
-            @Path("id") id: Int,
-            @Body requestBody: ProdutoUpdateRequest
-        ): Call<ProdutoUpdateResponse>
+        @POST("/armazena_api/produto_editar.php")
+        fun atualizarProduto(@Body requestBody: ProdutoUpdateRequest): Call<ProdutoUpdateResponse>
     }
 
     object RetrofitClient {
-        private const val BASE_URL = "http://192.168.0.43/"
+        private const val BASE_URL = "http://192.168.0.43/" // Substitua pela URL base da sua API
 
         val instance: ProdutoEditarApiService by lazy {
             val loggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.BODY // Mostra os logs das requisições (debug)
             }
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -84,15 +87,15 @@ class ProdutoEditarActivity : AppCompatActivity() {
         precoProdutoEditText = findViewById(R.id.precoProdutoEditText)
         descProdutoEditText = findViewById(R.id.descProdutoEditText)
 
-        val nomeProduto = intent.getStringExtra("PRODUTO_NOME")
-        val categoriaId = intent.getIntExtra("CATEGORIA_ID", -1)
-        val precoProduto = intent.getDoubleExtra("PRODUTO_PRECO", -1.0)
-        val descProduto = intent.getStringExtra("PRODUTO_DESC")
+        val getNomeProduto = intent.getStringExtra("PRODUTO_NOME")
+        val getCategoriaId = intent.getIntExtra("CATEGORIA_ID", 0)
+        val getPrecoProduto = intent.getDoubleExtra("PRODUTO_PRECO", 0.0).toString()
+        val getDescProduto = intent.getStringExtra("PRODUTO_DESC")
 
-        nomeProdutoEditText.setText(nomeProduto)
-        categoriaProdutoEditText.setText(categoriaId.toString())
-        precoProdutoEditText.setText(precoProduto.toString())
-        descProdutoEditText.setText(descProduto)
+        nomeProdutoEditText.setText(getNomeProduto)
+        categoriaProdutoEditText.setText(getCategoriaId.toString())
+        precoProdutoEditText.setText(getPrecoProduto)
+        descProdutoEditText.setText(getDescProduto)
 
         val EditProdutoButton: Button = findViewById(R.id.EditProdutoButton)
         EditProdutoButton.setOnClickListener {
@@ -107,32 +110,12 @@ class ProdutoEditarActivity : AppCompatActivity() {
             return
         }
 
-        val nomeProduto = nomeProdutoEditText.text.toString()
-        val categoriaId = categoriaProdutoEditText.text.toString().toInt()
-        val precoProduto = precoProdutoEditText.text.toString().toDouble()
-        val descProduto = descProdutoEditText.text.toString()
+        val nomeProduto = nomeProdutoEditText.text.trim().toString()
+        val categoriaId = categoriaProdutoEditText.text.trim().toString().toInt()
+        val precoProduto = precoProdutoEditText.text.trim().toString().toDouble()
+        val descProduto = descProdutoEditText.text.trim().toString()
 
-        if (nomeProduto.isEmpty()) {
-            Log.e("ProdutoEditar", "Nome do produto não pode ser vazio")
-            return
-        }
-
-        if (categoriaId == null || categoriaId == -1) {
-            Log.e("ProdutoEditar", "Categoria inválida")
-            return
-        }
-
-        if (precoProduto == null || precoProduto <= 0) {
-            Log.e("ProdutoEditar", "Preço inválido")
-            return
-        }
-
-        if (descProduto.isEmpty()) {
-            Log.e("ProdutoEditar", "A descrição não pode ser vazia")
-            return
-        }
-
-        val produtoParaAtualizar = ProdutoUpdateRequest(
+        val produtoUpdateRequest = ProdutoUpdateRequest(
             id_produto = idProduto,
             nome_produto = nomeProduto,
             id_categoria = categoriaId,
@@ -140,24 +123,41 @@ class ProdutoEditarActivity : AppCompatActivity() {
             desc_produto = descProduto
         )
 
-        val call = RetrofitClient.instance.atualizarProduto(idProduto, produtoParaAtualizar)
+        if (produtoUpdateRequest.nome_produto.isEmpty() || produtoUpdateRequest.id_categoria == -1 || produtoUpdateRequest.preco_produto <= 0 || produtoUpdateRequest.desc_produto.isEmpty()) {
+            Log.e("CadastroProduto", "Campos inválidos")
+            return
+        }
 
+        val call = RetrofitClient.instance.atualizarProduto(produtoUpdateRequest)
         call.enqueue(object : Callback<ProdutoUpdateResponse> {
             override fun onResponse(
                 call: Call<ProdutoUpdateResponse>,
                 response: Response<ProdutoUpdateResponse>
             ) {
-                if (response.isSuccessful) {
-                    val produtoAtualizado = response.body()
-                    Log.d("ProdutoEditar", "Produto atualizado: $produtoAtualizado")
-                    finish()
+                if (response.isSuccessful && response.body() != null) {
+                    val produtoEditarResponses = response.body()
+                    if (produtoEditarResponses != null && response.isSuccessful) {
+                        Log.d("ProdutoEditar", "Produto atualizado com sucesso!")
+                        val intent = Intent(this@ProdutoEditarActivity, ProdutoActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Log.e("API Error", "Response not successful. Code: ${response.code()}")
+                    }
                 } else {
-                    Log.e("ProdutoEditar", "Erro ao atualizar produto: ${response.code()} - ${response.errorBody()?.string()}")
+                    Log.e("cadastroProduto", "Erro HTTP: ${response.code()}")
                 }
             }
 
             override fun onFailure(call: Call<ProdutoUpdateResponse>, t: Throwable) {
-                Log.e("ProdutoEditar", "Falha na requisição: ${t.message}")
+                Log.e("CadastroProduto", "Falha na requisição: ${t.message}")
+                runOnUiThread {
+                    Toast.makeText(
+                        this@ProdutoEditarActivity,
+                        "Erro na conexão. Tente novamente.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         })
     }

@@ -1,4 +1,4 @@
-package com.example.armazena
+package com.example.armazena.activities.produto
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.armazena.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

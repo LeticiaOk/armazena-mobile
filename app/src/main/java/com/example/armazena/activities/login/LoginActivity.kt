@@ -1,13 +1,17 @@
-package com.example.armazena
+package com.example.armazena.activities.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.armazena.R
+import com.example.armazena.activities.produto.ProdutoActivity
+import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,9 +19,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.google.gson.annotations.SerializedName
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -25,6 +26,17 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 🔹 Verificando se o usuário já está logado
+        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("USUARIO_ID", -1)
+
+        if (usuarioId != -1) {
+            // Usuário já está logado, redireciona direto para a ProdutosActivity
+            val intent = Intent(this, ProdutoActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

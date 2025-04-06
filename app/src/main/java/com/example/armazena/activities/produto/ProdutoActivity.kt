@@ -1,11 +1,16 @@
-package com.example.armazena
+package com.example.armazena.activities.produto
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.armazena.activities.login.LoginActivity
+import com.example.armazena.adapters.ProdutoAdapter
+import com.example.armazena.R
 import com.example.armazena.entities.Produto
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,8 +20,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.DELETE
-import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 import kotlin.jvm.java
 
@@ -29,15 +32,25 @@ class ProdutoActivity : AppCompatActivity() {
         fun getProdutos(): Call<List<Produto>>
     }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_produto)
+        setContentView(R.layout.recycler_view_produtos)
+
+        val cadastroButton = findViewById<Button>(R.id.cadastroProdutoButton)
+        val logoutButton = findViewById<Button>(R.id.logoutButton)
 
         // Configura a RecyclerView
         recyclerView = findViewById(R.id.recyclerViewProdutos)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         listagemProdutos();
+        cadastroButton.setOnClickListener {
+            cadastroPage()
+        }
+        logoutButton.setOnClickListener {
+            logout()
+        }
     }
     private fun listagemProdutos() {
         // Configuração do Retrofit e chamada da API
@@ -46,9 +59,9 @@ class ProdutoActivity : AppCompatActivity() {
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(logging)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
             .build()
 
         val retrofit = Retrofit.Builder()
@@ -61,7 +74,7 @@ class ProdutoActivity : AppCompatActivity() {
         apiService.getProdutos().enqueue(object : Callback<List<Produto>> {
             override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
                 if (response.isSuccessful) {
-                    val produtos = response.body() ?: emptyList()
+                    val produtos = response.body()?.toMutableList() ?: mutableListOf()
                     recyclerView.adapter = ProdutoAdapter(produtos, this@ProdutoActivity)
                 } else {
                     Log.e("API Error", "Response not successful. Code: ${response.code()}")
@@ -72,6 +85,10 @@ class ProdutoActivity : AppCompatActivity() {
                 Log.e("API Failure", "Error fetching products", t)
             }
         })
+    }
+    private fun cadastroPage() {
+        val intent = Intent(this, ProdutoCadastroActivity::class.java)
+        startActivity(intent)
     }
     private fun logout() {
         val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
