@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     app:circularflow_defaultRadius="10dp"
     app:circularflow_radiusInDP="50dp"
-    tools:context=".LoginActivity">
+    tools:context=".view.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView"

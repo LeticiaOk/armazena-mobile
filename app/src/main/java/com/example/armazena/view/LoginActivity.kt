@@ -1,4 +1,4 @@
-package com.example.armazena
+package com.example.armazena.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,6 +16,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.armazena.R
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
