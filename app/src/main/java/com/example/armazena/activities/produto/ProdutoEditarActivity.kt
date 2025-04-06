@@ -6,12 +6,13 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.armazena.entities.Produto.ProdutoUpdateRequest
+import com.example.armazena.entities.Produto.ProdutoUpdateResponse
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.armazena.R
-import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,20 +22,6 @@ class ProdutoEditarActivity : AppCompatActivity() {
     private lateinit var categoriaProdutoEditText: EditText
     private lateinit var precoProdutoEditText: EditText
     private lateinit var descProdutoEditText: EditText
-
-    data class ProdutoUpdateRequest(
-        val id_produto: Int,
-        val nome_produto: String,
-        val id_categoria: Int,
-        val preco_produto: Double,
-        val desc_produto: String
-    )
-
-    data class ProdutoUpdateResponse(
-        val sucesso: Boolean,
-        val mensagem: String?,
-        val id_produto: Int?
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
