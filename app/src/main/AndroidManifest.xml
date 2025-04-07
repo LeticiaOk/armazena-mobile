@@ -14,35 +14,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Armazena"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
-        <activity
-            android:name=".adapters.ProdutoAdapter"
-            android:exported="false" />
+        tools:targetApi="35">
         <activity
             android:name=".activities.produto.ProdutoEditarActivity"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
         <activity
             android:name=".activities.produto.ProdutoCadastroActivity"
-            android:exported="false" />
+            android:exported="false">
+        </activity>
         <activity
             android:name=".activities.produto.ProdutoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ProdutosActivity"
-            android:exported="false"
-            tools:ignore="MissingClass" />
+            android:exported="true">
+        </activity>
         <activity
             android:name=".activities.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
     </application>
-
 </manifest>

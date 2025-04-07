@@ -57,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
+            .baseUrl("http://192.168.0.28/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)

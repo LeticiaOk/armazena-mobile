@@ -1,4 +1,4 @@
-package com.example.armazena.adapters
+package com.example.armazena.adapter
 
 import android.content.Context
 import android.content.Intent
