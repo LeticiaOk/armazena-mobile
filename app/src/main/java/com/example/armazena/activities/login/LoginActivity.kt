@@ -1,4 +1,4 @@
-package com.example.armazena.view
+package com.example.armazena.activities.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,11 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.armazena.R
+import com.example.armazena.activities.produto.ProdutoActivity
+import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,9 +19,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.armazena.R
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -24,6 +26,17 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 🔹 Verificando se o usuário já está logado
+        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("USUARIO_ID", -1)
+
+        if (usuarioId != -1) {
+            // Usuário já está logado, redireciona direto para a ProdutosActivity
+            val intent = Intent(this, ProdutoActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -44,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.4/")
+            .baseUrl("http://192.168.0.43/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)
@@ -57,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
                 if (response.isSuccessful && response.body() != null) {
                     val loginResponses = response.body()!!
                     if (loginResponses.isNotEmpty()) {
-                        val intent = Intent(this@LoginActivity, ProdutosActivity::class.java)
+                        val intent = Intent(this@LoginActivity, ProdutoActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -83,11 +96,8 @@ class LoginActivity : AppCompatActivity() {
             @Query("senha") senha: String
         ): Call<List<LoginResponse>>
     }
-
     data class LoginResponse(
-        val USUARIO_ID: Int,
-        val USUARIO_NOME: String,
-        val USUARIO_EMAIL: String,
-        val USUARIO_EMPRESA: String
+        @SerializedName("USUARIO_EMAIL") val usuarioEmail: String,
+        @SerializedName("USUARIO_SENHA") val usuarioSenha: String
     )
 }

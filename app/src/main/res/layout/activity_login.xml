@@ -5,75 +5,39 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:circularflow_defaultRadius="10dp"
-    app:circularflow_radiusInDP="50dp"
-    tools:context=".view.LoginActivity">
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="643dp"
-        android:layout_height="1252dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.501"
-        app:srcCompat="@drawable/background" />
-
-
-    <View
-        android:id="@+id/view2"
-        android:layout_width="358dp"
-        android:layout_height="473dp"
-        android:background="@drawable/rounded_background"
-        android:elevation="8dp"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="209dp" />
+    tools:context=".activities.login.LoginActivity">
 
     <EditText
         android:id="@+id/emailEditText"
-        android:layout_width="294dp"
-        android:layout_height="67dp"
-        android:background="#92ABD5"
-        android:elevation="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@+id/view2"
-        tools:layout_editor_absoluteY="365dp"
-        tools:visibility="visible" />
+        android:minHeight="48dp"
+        android:autofillHints="emailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/passwordEditText"
-        android:layout_width="294dp"
-        android:layout_height="67dp"
-        android:background="#92ABD5"
-        android:elevation="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:ems="10"
-        android:inputType="textPassword"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintStart_toStartOf="@+id/view2"
-        tools:layout_editor_absoluteY="445dp"
-        tools:visibility="visible" />
+        android:minHeight="48dp"
+        android:autofillHints="password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <Button
         android:id="@+id/loginButton"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#355075"
-        android:elevation="10dp"
-        android:text="@string/entrar"
-        android:textColor="#FFFFFF"
-        android:ems="10"
-        app:layout_constraintBottom_toBottomOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="@+id/view2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/view2"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText"
-        app:layout_constraintVertical_bias="0.508" />
-
-
-
+        android:layout_marginTop="44dp"
+        android:text="Entrar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

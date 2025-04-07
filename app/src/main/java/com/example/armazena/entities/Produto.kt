@@ -1,10 +1,11 @@
-import androidx.xr.scenecore.Entity
+package com.example.armazena.entities
 
-@Entity(tableName = "usuario")
-data class Usuario(
-    @PrimaryKey(autoGenerate = false)
-    val usuario_id: Int,
-    val usuario_nome: String,
-    val usuario_email: String,
-    val usuario_senha: String,
-    val usuario_empresa: String
+import com.google.gson.annotations.SerializedName
+
+public data class Produto (
+    @SerializedName("PRODUTO_ID") val idProduto: Int,
+    @SerializedName("PRODUTO_NOME") val nomeProduto: String,
+    @SerializedName("CATEGORIA_ID") val idCategoria: Int,
+    @SerializedName("PRODUTO_PRECO") val precoProduto: Double,
+    @SerializedName("PRODUTO_DESC") val descricaoProduto: String
+)
