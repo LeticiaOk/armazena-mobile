@@ -11,16 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.armazena.R
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.POST
-import java.util.concurrent.TimeUnit
 
 class ProdutoEditarActivity : AppCompatActivity() {
     private lateinit var nomeProdutoEditText: EditText
@@ -41,36 +35,6 @@ class ProdutoEditarActivity : AppCompatActivity() {
         val mensagem: String?,
         val id_produto: Int?
     )
-
-    interface ProdutoEditarApiService {
-        @POST("/armazena_api/produto_editar.php")
-        fun atualizarProduto(@Body requestBody: ProdutoUpdateRequest): Call<ProdutoUpdateResponse>
-    }
-
-    object RetrofitClient {
-        private const val BASE_URL = "http://192.168.0.43/" // Substitua pela URL base da sua API
-
-        val instance: ProdutoEditarApiService by lazy {
-            val loggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY // Mostra os logs das requisições (debug)
-            }
-
-            val client = OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .build()
-
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-            retrofit.create(ProdutoEditarApiService::class.java)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

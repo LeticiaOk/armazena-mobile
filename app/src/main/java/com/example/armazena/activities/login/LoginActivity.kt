@@ -11,14 +11,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.armazena.R
 import com.example.armazena.activities.produto.ProdutoActivity
+import com.example.armazena.retrofit.RetrofitClient
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -56,12 +53,7 @@ class LoginActivity : AppCompatActivity() {
     private fun blockLogin() {
         val email = emailEditText.text.toString().trim()
         val password = passwordEditText.text.toString().trim()
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val apiService = retrofit.create(ApiService::class.java)
-        val call = apiService.login(email, password)
+        val call = RetrofitClient.instance.login(email, password)
         call.enqueue(object : Callback<List<LoginResponse>> {
             override fun onResponse(
                 call: Call<List<LoginResponse>>,
@@ -89,13 +81,6 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    interface ApiService {
-        @GET("/armazena_api/login.php")
-        fun login(
-            @Query("usuario") usuario: String,
-            @Query("senha") senha: String
-        ): Call<List<LoginResponse>>
-    }
     data class LoginResponse(
         @SerializedName("USUARIO_EMAIL") val usuarioEmail: String,
         @SerializedName("USUARIO_SENHA") val usuarioSenha: String

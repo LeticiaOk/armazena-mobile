@@ -13,18 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.armazena.activities.produto.ProdutoEditarActivity
 import com.example.armazena.R
 import com.example.armazena.entities.Produto
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
 
 class ProdutoAdapter(
     private val produtos: MutableList<Produto>,
@@ -38,33 +30,6 @@ class ProdutoAdapter(
         val preco: TextView = itemView.findViewById(R.id.valorProduto)
         val editarButton: Button = itemView.findViewById(R.id.idProdutoEditarButton)
         val deletarButton: Button = itemView.findViewById(R.id.deleteButton)
-    }
-
-    object RetrofitClient {
-        private const val BASE_URL = "http://192.168.0.43/"
-
-        val instance: ProdutoDeleteApiService by lazy {
-            val loggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
-
-            val client = OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build()
-
-            val gson: Gson = GsonBuilder()
-                .setLenient()
-                .create()
-
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build()
-
-
-            retrofit.create(ProdutoDeleteApiService::class.java)
-        }
     }
 
     // Infla o layout do item
@@ -97,14 +62,6 @@ class ProdutoAdapter(
         holder.deletarButton.setOnClickListener {
             deleteProduto(position)
         }
-    }
-
-    interface ProdutoDeleteApiService {
-        @FormUrlEncoded
-        @POST("/armazena_api/produto_delete.php")
-        fun deletarProduto(
-            @Field("PRODUTO_ID") id: Int
-        ): Call<Void>
     }
 
     private fun deleteProduto(position: Int) {

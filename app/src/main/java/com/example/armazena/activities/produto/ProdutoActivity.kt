@@ -12,6 +12,7 @@ import com.example.armazena.activities.login.LoginActivity
 import com.example.armazena.adapters.ProdutoAdapter
 import com.example.armazena.R
 import com.example.armazena.entities.Produto
+import com.example.armazena.interface_api.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,18 +20,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
 import kotlin.jvm.java
 
 class ProdutoActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: ProdutoAdapter
-
-    interface ProdutoListagemApiService {
-        @GET("/armazena_api/produto.php")
-        fun getProdutos(): Call<List<Produto>>
-    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +64,7 @@ class ProdutoActivity : AppCompatActivity() {
             .client(okHttpClient)
             .build()
 
-        val apiService = retrofit.create(ProdutoListagemApiService::class.java)
+        val apiService = retrofit.create(ApiService::class.java)
         apiService.getProdutos().enqueue(object : Callback<List<Produto>> {
             override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
                 if (response.isSuccessful) {
@@ -97,6 +91,6 @@ class ProdutoActivity : AppCompatActivity() {
         // Redireciona para a tela de login
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
-        finish() // Finaliza a ProdutosActivity
+        finish()
     }
 }

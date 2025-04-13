@@ -11,15 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.armazena.R
+import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class ProdutoCadastroActivity : AppCompatActivity() {
     private lateinit var nomeProdutoEditText: EditText
@@ -39,33 +34,6 @@ class ProdutoCadastroActivity : AppCompatActivity() {
         val mensagem: String?,
         val id_produto: Int?
     )
-
-    interface ProdutoCadastroApiService {
-        @POST("/armazena_api/produto_cadastro.php")
-        fun cadastrarProduto(@Body requestBody: ProdutoCadastroRequest): Call<ProdutoCadastroResponse>
-    }
-
-    object RetrofitClient {
-        private const val BASE_URL = "http://192.168.0.43/" // Substitua pela URL base da sua API
-
-        val instance: ProdutoCadastroApiService by lazy {
-            val loggingInterceptor = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY // Mostra os logs das requisições (debug)
-            }
-
-            val client = OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build()
-
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-            retrofit.create(ProdutoCadastroApiService::class.java)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
