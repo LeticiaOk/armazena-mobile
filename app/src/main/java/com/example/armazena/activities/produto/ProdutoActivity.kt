@@ -13,6 +13,7 @@ import com.example.armazena.adapters.ProdutoAdapter
 import com.example.armazena.R
 import com.example.armazena.entities.Produto
 import com.example.armazena.interface_api.ApiService
+import com.example.armazena.retrofit.RetrofitClient
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -47,25 +48,8 @@ class ProdutoActivity : AppCompatActivity() {
         }
     }
     private fun listagemProdutos() {
-        // Configuração do Retrofit e chamada da API
-        val logging = HttpLoggingInterceptor { message -> Log.d("OkHttp", message) }
-        logging.level = HttpLoggingInterceptor.Level.BODY
-
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.0.43/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-
-        val apiService = retrofit.create(ApiService::class.java)
-        apiService.getProdutos().enqueue(object : Callback<List<Produto>> {
+        val call = RetrofitClient.instance.getProdutos()
+        call.enqueue(object : Callback<List<Produto>> {
             override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
                 if (response.isSuccessful) {
                     val produtos = response.body()?.toMutableList() ?: mutableListOf()
