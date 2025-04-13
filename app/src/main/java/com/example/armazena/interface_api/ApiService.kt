@@ -6,7 +6,6 @@ import com.example.armazena.activities.produto.ProdutoEditarActivity.ProdutoUpda
 import com.example.armazena.entities.Produto.Produto
 import com.example.armazena.entities.Produto.ProdutoCadastroRequest
 import com.example.armazena.entities.Produto.ProdutoCadastroResponse
-import com.example.armazena.entities.Usuario.Usuario
 import com.example.armazena.entities.Usuario.UsuarioCadastroRequest
 import com.example.armazena.entities.Usuario.UsuarioCadastroResponse
 import retrofit2.Call
@@ -24,9 +23,6 @@ interface ApiService {
         @Query("usuario") usuario: String,
         @Query("senha") senha: String
     ): Call<List<LoginResponse>>
-
-    @GET("/armazena_api/usuario.php")
-    fun getUsuarios(): Call<List<Usuario>>
 
     @POST("/armazena_api/usuario_cadastro.php")
     fun cadastrarUsuario(@Body requestBody: UsuarioCadastroRequest): Call<UsuarioCadastroResponse>
