@@ -1,6 +1,8 @@
 package com.example.armazena.retrofit
 
 import com.example.armazena.interface_api.ApiService
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -9,6 +11,10 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
     private const val BASE_URL = "http://192.168.0.43/" // Substitua pela URL base da sua API
+
+    private val gson: Gson = GsonBuilder()
+        .setLenient()
+        .create()
 
     val instance: ApiService by lazy {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -25,7 +31,7 @@ object RetrofitClient {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         retrofit.create(ApiService::class.java)
