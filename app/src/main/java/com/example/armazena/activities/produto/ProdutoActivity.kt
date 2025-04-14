@@ -12,16 +12,10 @@ import com.example.armazena.activities.login.LoginActivity
 import com.example.armazena.adapters.ProdutoAdapter
 import com.example.armazena.R
 import com.example.armazena.entities.Produto
-import com.example.armazena.interface_api.ApiService
 import com.example.armazena.retrofit.RetrofitClient
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import kotlin.jvm.java
 
 class ProdutoActivity : AppCompatActivity() {
