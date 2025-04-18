@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/nomeProduto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:text="Nome do produto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/descricaoProduto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descrição do produto"
+        app:layout_constraintStart_toStartOf="@+id/nomeProduto"
+        app:layout_constraintTop_toBottomOf="@+id/nomeProduto" />
+
+    <TextView
+        android:id="@+id/valorProduto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:text="Valor do produto"
+        app:layout_constraintStart_toStartOf="@+id/descricaoProduto"
+        app:layout_constraintTop_toBottomOf="@+id/descricaoProduto" />
+</androidx.constraintlayout.widget.ConstraintLayout>
