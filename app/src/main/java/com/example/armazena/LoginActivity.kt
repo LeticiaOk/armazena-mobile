@@ -1,0 +1,112 @@
+package com.example.armazena
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.gson.GsonBuilder
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
+
+class LoginActivity : AppCompatActivity() {
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_login)
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        emailEditText = findViewById(R.id.emailEditText)
+        passwordEditText = findViewById(R.id.passwordEditText)
+        val loginButton: Button = findViewById(R.id.loginButton)
+
+        loginButton.setOnClickListener {
+            login()
+        }
+    }
+
+    private fun login() {
+        val email = emailEditText.text.toString().trim()
+        val password = passwordEditText.text.toString().trim()
+
+        if (email.isEmpty() || password.isEmpty()) {
+            showToast("Preencha todos os campos")
+            return
+        }
+
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.1.4/armazena_api/")
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+        val call = apiService.login(email, password)
+
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    val loginResponse = response.body()
+
+                    if (loginResponse != null && !loginResponse.isNullOrEmpty()) {
+                        startActivity(Intent(this@LoginActivity, ListaProduto::class.java))
+                        finish()
+                    } else {
+                        showToast("Usuário ou senha inválidos")
+                    }
+                } else {
+                    showToast("Erro no login: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                showToast("Erro de conexão: ${t.message}")
+            }
+        })
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this@LoginActivity, message, Toast.LENGTH_LONG).show()
+    }
+
+    interface ApiService {
+        @POST("/armazena_api/login.php")
+        @FormUrlEncoded
+        fun login(
+            @Field("usuario") usuario: String,
+            @Field("senha") senha: String
+        ): Call<LoginResponse>
+    }
+
+    // Definindo a classe LoginResponse dentro da LoginActivity
+    data class LoginResponse(
+        val USUARIO_ID: Int,
+        val USUARIO_NOME: String,
+        val USUARIO_EMAIL: String,
+        val USUARIO_SENHA: String,
+        val USUARIO_EMPRESA: String
+    ) {
+        // Função de extensão para verificar se os campos estão vazios
+        fun isNullOrEmpty(): Boolean {
+            return USUARIO_NOME.isEmpty() || USUARIO_EMAIL.isEmpty() || USUARIO_SENHA.isEmpty() || USUARIO_EMPRESA.isEmpty()
+        }
+    }
+}
