@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.armazena.R
+import com.example.armazena.entities.Produto.ProdutoCadastroRequest
+import com.example.armazena.entities.Produto.ProdutoCadastroResponse
 import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,19 +23,6 @@ class ProdutoCadastroActivity : AppCompatActivity() {
     private lateinit var categoriaProdutoEditText: EditText
     private lateinit var precoProdutoEditText: EditText
     private lateinit var descProdutoEditText: EditText
-
-    data class ProdutoCadastroRequest(
-        val nome_produto: String,
-        val id_categoria: Int,
-        val preco_produto: Double,
-        val desc_produto: String
-    )
-
-    data class ProdutoCadastroResponse(
-        val sucesso: Boolean,
-        val mensagem: String?,
-        val id_produto: Int?
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +62,9 @@ class ProdutoCadastroActivity : AppCompatActivity() {
             nome_produto = nomeProduto,
             id_categoria = categoriaId.toInt(),
             preco_produto = precoProduto.toDouble(),
-            desc_produto = descProduto
+            descricao_produto = descProduto
         )
+
         val call = RetrofitClient.instance.cadastrarProduto(produtoCadastroRequest)
         call.enqueue(object : Callback<ProdutoCadastroResponse> {
             override fun onResponse(
