@@ -19,12 +19,15 @@ import java.util.concurrent.TimeUnit
 
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 class ProdutosActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProdutoAdapter
-
+    private lateinit var addProductButton: Button
     private lateinit var btnLogout: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +43,9 @@ class ProdutosActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewProdutos)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        addProductButton = findViewById(R.id.incluirProdutoButton) // Inicializando o botÃƒÂ£o
         btnLogout = findViewById(R.id.btnLogout)
+
         btnLogout.setOnClickListener {
             logout()
         }
@@ -62,27 +67,46 @@ class ProdutosActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.4/")
+            .baseUrl("http://192.168.1.3/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
+
         apiService.getProdutos().enqueue(object : Callback<List<Produto>> {
             override fun onResponse(call: Call<List<Produto>>, response: Response<List<Produto>>) {
                 if (response.isSuccessful) {
                     val produtos = response.body() ?: emptyList()
-                    adapter = ProdutoAdapter(produtos)
+                    adapter = ProdutoAdapter(produtos, apiService)
                     recyclerView.adapter = adapter
                 } else {
-                    Log.e("API Error", "Response not successful. Code: ${response.code()}")
+                    Log.e("API Error", "Falha ao carregar produtos. Código: ${response.code()}")
                 }
             }
             override fun onFailure(call: Call<List<Produto>>, t: Throwable) {
-                Log.e("API Failure", "Error fetching products", t)
+                Log.e("API Failure", "Erro ao carregar os produtos", t)
             }
         })
 
+        // Adicionar listener para o botão de adicionar produto
+        addProductButton.setOnClickListener {
+            val intent = Intent(this, IncluirProdutoActivity::class.java)
+            startActivity(intent)  // Abrir a tela de inclusão de produto
+        }
+    }
+
+    // Configuração do OkHttpClient com logging
+    private fun configureOkHttpClient(): OkHttpClient {
+        val logging = HttpLoggingInterceptor { message -> Log.d("OkHttp", message) }
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
+        return OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
     }
 
     private fun logout() {
@@ -90,19 +114,5 @@ class ProdutosActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
-
-    interface ApiService {
-        @GET("/armazena_api/produto.php")
-        fun getProdutos(): Call<List<Produto>>
-
-    }
-
-    data class Produto(
-        val PRODUTO_ID: Int,
-        val PRODUTO_NOME: String,
-        val PRODUTO_DESC: String,
-        val PRODUTO_PRECO: String,
-        val CATEGORIA_ID: Int,
-    )
 
 }

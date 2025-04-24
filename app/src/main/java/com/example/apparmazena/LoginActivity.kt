@@ -55,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString().trim()
         // Momento do "build" da retrofit, passando a URL base.
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.4/")
+            .baseUrl("http://192.168.1.3/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)
@@ -97,15 +97,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG).show()
             }
         })
-    }
-
-    interface ApiService {
-        @GET("/armazena_api/login.php")
-        fun login(
-            // Passando argumentos para url
-            @Query("usuario") usuario: String,
-            @Query("senha") senha: String
-        ): Call<List<LoginResponse>> // Recebe no formato lista de LoginResponse
     }
 
     data class LoginResponse(
