@@ -4,13 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:id="@+id/main"
+    android:gravity="center"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.produto.ProdutoEditarActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="157dp"
+        tools:layout_editor_absoluteY="27dp">
+
     <EditText
         android:id="@+id/nomeProdutoEditText"
-        android:layout_width="0dp"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
         android:ems="10"
@@ -26,7 +36,7 @@
 
     <EditText
         android:id="@+id/categoriaProdutoEditText"
-        android:layout_width="0dp"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="32dp"
@@ -41,7 +51,7 @@
         android:layout_marginHorizontal="24dp"/>
     <EditText
         android:id="@+id/precoProdutoEditText"
-        android:layout_width="0dp"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="32dp"
@@ -56,7 +66,7 @@
         android:layout_marginHorizontal="24dp"/>
     <EditText
         android:id="@+id/descProdutoEditText"
-        android:layout_width="0dp"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_marginTop="32dp"
@@ -72,13 +82,14 @@
 
     <Button
         android:id="@+id/EditProdutoButton"
-        android:layout_width="wrap_content"
+        android:layout_width="399dp"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
+        android:backgroundTint="@color/darkRed"
         android:layout_marginTop="44dp"
         android:text="Salvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descProdutoEditText" />
-
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,11 +1,11 @@
 package com.example.armazena.interface_api
 
 import com.example.armazena.activities.login.LoginActivity.LoginResponse
-import com.example.armazena.activities.produto.ProdutoEditarActivity.ProdutoUpdateRequest
-import com.example.armazena.activities.produto.ProdutoEditarActivity.ProdutoUpdateResponse
 import com.example.armazena.entities.Produto.Produto
 import com.example.armazena.entities.Produto.ProdutoCadastroRequest
 import com.example.armazena.entities.Produto.ProdutoCadastroResponse
+import com.example.armazena.entities.Produto.ProdutoUpdateRequest
+import com.example.armazena.entities.Produto.ProdutoUpdateResponse
 import com.example.armazena.entities.Usuario.UsuarioCadastroRequest
 import com.example.armazena.entities.Usuario.UsuarioCadastroResponse
 import retrofit2.Call

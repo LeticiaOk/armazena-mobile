@@ -91,11 +91,11 @@ class UsuarioCadastroActivity : AppCompatActivity() {
                 }
             }
         })
-        }
-        private fun limparCampos() {
-            nomeUsuarioEditText.text.clear()
-            emailUsuarioEditText.text.clear()
-            senhaUsuarioEditText.text.clear()
-            empresaUsuarioEditText.text.clear()
-        }
+    }
+    private fun limparCampos() {
+        nomeUsuarioEditText.text.clear()
+        emailUsuarioEditText.text.clear()
+        senhaUsuarioEditText.text.clear()
+        empresaUsuarioEditText.text.clear()
+    }
 }

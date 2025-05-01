@@ -24,4 +24,18 @@ public class Produto() {
         val mensagem: String?,
         val id_produto: Int?
     )
+
+    data class ProdutoUpdateRequest(
+        val id_produto: Int,
+        val nome_produto: String,
+        val id_categoria: Int,
+        val preco_produto: Double,
+        val descricao_produto: String
+    )
+
+    data class ProdutoUpdateResponse(
+        val sucesso: Boolean,
+        val mensagem: String?,
+        val id_produto: Int?
+    )
 }

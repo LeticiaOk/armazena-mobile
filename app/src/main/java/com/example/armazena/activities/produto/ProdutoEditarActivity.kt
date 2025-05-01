@@ -6,13 +6,14 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.example.armazena.entities.Produto.ProdutoUpdateRequest
-import com.example.armazena.entities.Produto.ProdutoUpdateResponse
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.armazena.R
+import com.example.armazena.entities.Produto.ProdutoUpdateRequest
+import com.example.armazena.entities.Produto.ProdutoUpdateResponse
+import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +23,8 @@ class ProdutoEditarActivity : AppCompatActivity() {
     private lateinit var categoriaProdutoEditText: EditText
     private lateinit var precoProdutoEditText: EditText
     private lateinit var descProdutoEditText: EditText
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,10 +74,10 @@ class ProdutoEditarActivity : AppCompatActivity() {
             nome_produto = nomeProduto,
             id_categoria = categoriaId,
             preco_produto = precoProduto,
-            desc_produto = descProduto
+            descricao_produto = descProduto
         )
 
-        if (produtoUpdateRequest.nome_produto.isEmpty() || produtoUpdateRequest.id_categoria == -1 || produtoUpdateRequest.preco_produto <= 0 || produtoUpdateRequest.desc_produto.isEmpty()) {
+        if (produtoUpdateRequest.nome_produto.isEmpty() || produtoUpdateRequest.id_categoria == -1 || produtoUpdateRequest.preco_produto <= 0 || produtoUpdateRequest.descricao_produto.isEmpty()) {
             Log.e("CadastroProduto", "Campos inválidos")
             return
         }
