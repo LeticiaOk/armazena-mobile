@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.armazena.activities.login.LoginActivity
-import com.example.armazena.adapters.ProdutoAdapter
 import com.example.armazena.R
-import com.example.armazena.entities.Produto
+import com.example.armazena.adapters.ProdutoAdapter
+import com.example.armazena.entities.Produto.Produto
 import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback

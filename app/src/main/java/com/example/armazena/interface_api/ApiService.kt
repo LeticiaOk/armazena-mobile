@@ -1,11 +1,13 @@
 package com.example.armazena.interface_api
 
 import com.example.armazena.activities.login.LoginActivity.LoginResponse
-import com.example.armazena.activities.produto.ProdutoCadastroActivity.ProdutoCadastroRequest
-import com.example.armazena.activities.produto.ProdutoCadastroActivity.ProdutoCadastroResponse
-import com.example.armazena.activities.produto.ProdutoEditarActivity.ProdutoUpdateRequest
-import com.example.armazena.activities.produto.ProdutoEditarActivity.ProdutoUpdateResponse
-import com.example.armazena.entities.Produto
+import com.example.armazena.entities.Produto.Produto
+import com.example.armazena.entities.Produto.ProdutoCadastroRequest
+import com.example.armazena.entities.Produto.ProdutoCadastroResponse
+import com.example.armazena.entities.Produto.ProdutoUpdateRequest
+import com.example.armazena.entities.Produto.ProdutoUpdateResponse
+import com.example.armazena.entities.Usuario.UsuarioCadastroRequest
+import com.example.armazena.entities.Usuario.UsuarioCadastroResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.FormUrlEncoded
@@ -21,6 +23,9 @@ interface ApiService {
         @Query("usuario") usuario: String,
         @Query("senha") senha: String
     ): Call<List<LoginResponse>>
+
+    @POST("/armazena_api/usuario_cadastro.php")
+    fun cadastrarUsuario(@Body requestBody: UsuarioCadastroRequest): Call<UsuarioCadastroResponse>
 
     @GET("/armazena_api/produto.php")
     fun getProdutos(): Call<List<Produto>>
