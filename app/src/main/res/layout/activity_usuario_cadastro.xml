@@ -98,6 +98,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/senhaUsuarioEditText" />
 
+        <Spinner
+            android:id="@+id/usuarioTipoSpinner"
+            android:layout_width="376dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:minHeight="48dp"
+            android:padding="12dp"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textColorHighlight="@color/black"
+            android:textColorHint="@color/black"
+            android:textColorLink="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <Button
             android:id="@+id/cadastroUsuarioButton"
             android:layout_width="399dp"
@@ -109,6 +126,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/empresaUsuarioEditText" />
+
+
     </LinearLayout>
 
 

@@ -3,8 +3,10 @@ package com.example.armazena.activities.usuario
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +26,7 @@ class UsuarioCadastroActivity : AppCompatActivity() {
     private lateinit var emailUsuarioEditText: EditText
     private lateinit var senhaUsuarioEditText: EditText
     private lateinit var empresaUsuarioEditText: EditText
+    private lateinit var usuarioTipoSpinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +37,16 @@ class UsuarioCadastroActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        usuarioTipoSpinner = findViewById(R.id.usuarioTipoSpinner)
         nomeUsuarioEditText = findViewById(R.id.nomeUsuarioEditText)
         emailUsuarioEditText = findViewById(R.id.emailUsuarioEditText)
         senhaUsuarioEditText = findViewById(R.id.senhaUsuarioEditText)
         empresaUsuarioEditText = findViewById(R.id.empresaUsuarioEditText)
+        usuarioTipoSpinner = findViewById(R.id.usuarioTipoSpinner)
+        val opcoes = listOf("Administrador", "Cliente")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opcoes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        usuarioTipoSpinner.adapter = adapter
         val cadastroUsuarioButton: Button = findViewById(R.id.cadastroUsuarioButton)
         cadastroUsuarioButton.setOnClickListener {
             cadastrarUsuario()
@@ -49,17 +58,25 @@ class UsuarioCadastroActivity : AppCompatActivity() {
         val emailUsuario = emailUsuarioEditText.text.toString().trim()
         val senhaUsuario = senhaUsuarioEditText.text.toString().trim()
         val empresaUsuario = empresaUsuarioEditText.text.toString().trim()
+        var usuarioTipo = usuarioTipoSpinner.selectedItem.toString().trim()
 
-        if (nomeUsuario.isEmpty() || emailUsuario.isEmpty() || senhaUsuario.isEmpty() || empresaUsuario.isEmpty()) {
+        if (nomeUsuario.isEmpty() || emailUsuario.isEmpty() || senhaUsuario.isEmpty() || empresaUsuario.isEmpty() || usuarioTipo.isEmpty()) {
             Log.e("CadastroProduto", "Campos inválidos")
             return
+        }
+
+        if(usuarioTipo == "Administrador") {
+            usuarioTipo = "1"
+        } else if(usuarioTipo == "Cliente") {
+            usuarioTipo = "2"
         }
 
         val usuarioCadastroRequest = UsuarioCadastroRequest(
             nome_usuario = nomeUsuario,
             email_usuario = emailUsuario,
             senha_usuario = senhaUsuario,
-            empresa_usuario = empresaUsuario
+            empresa_usuario = empresaUsuario,
+            usuario_tipo_id = usuarioTipo.toInt()
         )
 
         val call = RetrofitClient.instance.cadastrarUsuario(usuarioCadastroRequest)
