@@ -34,21 +34,24 @@
         android:padding="12dp"
         android:layout_marginHorizontal="24dp" />
 
-    <EditText
-        android:id="@+id/categoriaProdutoEditText"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:inputType="number"
-        android:minHeight="48dp"
-        android:hint="Categoria do produto(ID)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomeProdutoEditText"
-        android:padding="12dp"
-        android:layout_marginHorizontal="24dp"/>
+        <Spinner
+            android:id="@+id/categoriaProdutoSpinner"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:hint="Categoria do produto"
+            android:minHeight="48dp"
+            android:padding="12dp"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textColorHighlight="@color/black"
+            android:textColorHint="@color/black"
+            android:textColorLink="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nomeProdutoEditText" />
     <EditText
         android:id="@+id/precoProdutoEditText"
         android:layout_width="360dp"

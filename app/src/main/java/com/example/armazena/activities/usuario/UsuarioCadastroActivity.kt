@@ -43,7 +43,7 @@ class UsuarioCadastroActivity : AppCompatActivity() {
         senhaUsuarioEditText = findViewById(R.id.senhaUsuarioEditText)
         empresaUsuarioEditText = findViewById(R.id.empresaUsuarioEditText)
         usuarioTipoSpinner = findViewById(R.id.usuarioTipoSpinner)
-        val opcoes = listOf("Administrador", "Cliente")
+        val opcoes = listOf("Tipo de usuario", "Administrador", "Cliente")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opcoes)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         usuarioTipoSpinner.adapter = adapter

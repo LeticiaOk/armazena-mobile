@@ -3,8 +3,10 @@ package com.example.armazena.activities.produto
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,10 +22,9 @@ import retrofit2.Response
 
 class ProdutoEditarActivity : AppCompatActivity() {
     private lateinit var nomeProdutoEditText: EditText
-    private lateinit var categoriaProdutoEditText: EditText
+    private lateinit var categoriaProdutoSpinner: Spinner
     private lateinit var precoProdutoEditText: EditText
     private lateinit var descProdutoEditText: EditText
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +38,11 @@ class ProdutoEditarActivity : AppCompatActivity() {
         }
 
         nomeProdutoEditText = findViewById(R.id.nomeProdutoEditText)
-        categoriaProdutoEditText = findViewById(R.id.categoriaProdutoEditText)
+        categoriaProdutoSpinner = findViewById(R.id.categoriaProdutoSpinner)
+        val opcoes = listOf("Categoria do produto", "Alimentos e bebidas", "Informática", "Eletrônicos", "Roupas")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opcoes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categoriaProdutoSpinner.adapter = adapter
         precoProdutoEditText = findViewById(R.id.precoProdutoEditText)
         descProdutoEditText = findViewById(R.id.descProdutoEditText)
 
@@ -47,7 +52,7 @@ class ProdutoEditarActivity : AppCompatActivity() {
         val getDescProduto = intent.getStringExtra("PRODUTO_DESC")
 
         nomeProdutoEditText.setText(getNomeProduto)
-        categoriaProdutoEditText.setText(getCategoriaId.toString())
+        categoriaProdutoSpinner.setSelection(getCategoriaId)
         precoProdutoEditText.setText(getPrecoProduto)
         descProdutoEditText.setText(getDescProduto)
 
@@ -65,14 +70,24 @@ class ProdutoEditarActivity : AppCompatActivity() {
         }
 
         val nomeProduto = nomeProdutoEditText.text.trim().toString()
-        val categoriaId = categoriaProdutoEditText.text.trim().toString().toInt()
+        var categoriaProduto = categoriaProdutoSpinner.selectedItem.toString().trim()
         val precoProduto = precoProdutoEditText.text.trim().toString().toDouble()
         val descProduto = descProdutoEditText.text.trim().toString()
+
+        if(categoriaProduto == "Alimentos e bebidas") {
+            categoriaProduto = "1"
+        } else if(categoriaProduto == "Informática") {
+            categoriaProduto = "2"
+        } else if(categoriaProduto == "Eletrônicos") {
+            categoriaProduto = "3"
+        } else if(categoriaProduto == "Roupas") {
+            categoriaProduto = "4"
+        }
 
         val produtoUpdateRequest = ProdutoUpdateRequest(
             id_produto = idProduto,
             nome_produto = nomeProduto,
-            id_categoria = categoriaId,
+            id_categoria = categoriaProduto.toInt(),
             preco_produto = precoProduto,
             descricao_produto = descProduto
         )
