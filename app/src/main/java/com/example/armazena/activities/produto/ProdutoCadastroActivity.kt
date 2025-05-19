@@ -3,14 +3,18 @@ package com.example.armazena.activities.produto
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.armazena.R
+import com.example.armazena.entities.Produto.ProdutoCadastroRequest
+import com.example.armazena.entities.Produto.ProdutoCadastroResponse
 import com.example.armazena.retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,22 +22,9 @@ import retrofit2.Response
 
 class ProdutoCadastroActivity : AppCompatActivity() {
     private lateinit var nomeProdutoEditText: EditText
-    private lateinit var categoriaProdutoEditText: EditText
+    private lateinit var categoriaProdutoSpinner: Spinner
     private lateinit var precoProdutoEditText: EditText
     private lateinit var descProdutoEditText: EditText
-
-    data class ProdutoCadastroRequest(
-        val nome_produto: String,
-        val id_categoria: Int,
-        val preco_produto: Double,
-        val desc_produto: String
-    )
-
-    data class ProdutoCadastroResponse(
-        val sucesso: Boolean,
-        val mensagem: String?,
-        val id_produto: Int?
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +37,11 @@ class ProdutoCadastroActivity : AppCompatActivity() {
         }
 
         nomeProdutoEditText = findViewById(R.id.nomeProdutoEditText)
-        categoriaProdutoEditText = findViewById(R.id.categoriaProdutoEditText)
+        categoriaProdutoSpinner = findViewById(R.id.categoriaProdutoSpinner)
+        val opcoes = listOf("Categoria do produto", "Alimentos e bebidas", "Informática", "Eletrônicos", "Roupas")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, opcoes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categoriaProdutoSpinner.adapter = adapter
         precoProdutoEditText = findViewById(R.id.precoProdutoEditText)
         descProdutoEditText = findViewById(R.id.descProdutoEditText)
         val cadastroProdutoButton: Button = findViewById(R.id.cadastroProdutoButton)
@@ -56,25 +51,35 @@ class ProdutoCadastroActivity : AppCompatActivity() {
     }
     private fun cadastrarProduto() {
         val nomeProduto = nomeProdutoEditText.text.toString().trim();
-        val categoriaId = categoriaProdutoEditText.text.toString().trim();
+        var categoriaProduto = categoriaProdutoSpinner.selectedItem.toString().trim();
         val precoProduto = precoProdutoEditText.text.toString().trim();
         val descProduto = descProdutoEditText.text.toString().trim();
 
-        if (nomeProduto.isEmpty() || categoriaId == null || precoProduto == null || descProduto.isEmpty()) {
+        if (nomeProduto.isEmpty() || categoriaProduto.isEmpty() || precoProduto == null || descProduto.isEmpty()) {
             // Mostrar mensagem de erro ao usuário (campos inválidos)
             Log.e("CadastroProduto", "Campos inválidos")
             return
         }
 
-        val categoriaIdInt = try { categoriaId.toInt() } catch (e: NumberFormatException) { -1 }
+        if(categoriaProduto == "Alimentos e bebidas") {
+            categoriaProduto = "1"
+        } else if(categoriaProduto == "Informática") {
+            categoriaProduto = "2"
+        } else if(categoriaProduto == "Eletrônicos") {
+            categoriaProduto = "3"
+        } else if(categoriaProduto == "Roupas") {
+            categoriaProduto = "4"
+        }
+
         val precoProdutoDouble = try { precoProduto.toDouble() } catch (e: NumberFormatException) { -1.0 }
 
         val produtoCadastroRequest = ProdutoCadastroRequest(
             nome_produto = nomeProduto,
-            id_categoria = categoriaId.toInt(),
+            id_categoria = categoriaProduto.toInt(),
             preco_produto = precoProduto.toDouble(),
-            desc_produto = descProduto
+            descricao_produto = descProduto
         )
+
         val call = RetrofitClient.instance.cadastrarProduto(produtoCadastroRequest)
         call.enqueue(object : Callback<ProdutoCadastroResponse> {
             override fun onResponse(
@@ -108,7 +113,7 @@ class ProdutoCadastroActivity : AppCompatActivity() {
     }
     private fun limparCampos() {
         nomeProdutoEditText.text.clear()
-        categoriaProdutoEditText.text.clear()
+        categoriaProdutoSpinner.setSelection(0)
         precoProdutoEditText.text.clear()
         descProdutoEditText.text.clear()
     }

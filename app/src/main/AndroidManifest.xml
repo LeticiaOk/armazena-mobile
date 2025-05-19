@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,24 +17,29 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="35">
         <activity
-            android:name=".activities.produto.ProdutoEditarActivity"
-            android:exported="false">
-        </activity>
+            android:name=".activities.usuario.UsuarioCadastroActivity"
+            android:exported="false" />
         <activity
-            android:name=".activities.produto.ProdutoCadastroActivity"
-            android:exported="false">
-        </activity>
-        <activity
-            android:name=".activities.produto.ProdutoActivity"
-            android:exported="false">
-        </activity>
-        <activity
-            android:name=".activities.login.LoginActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.produto.ProdutoEditarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.produto.ProdutoCadastroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.produto.ProdutoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.login.LoginActivity"
+            android:exported="false">
+        </activity>
     </application>
+
 </manifest>
