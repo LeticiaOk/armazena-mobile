@@ -56,13 +56,24 @@
         app:layout_constraintTop_toBottomOf="@+id/precoEditText" />
 
     <!-- BotÃƒÂ£o para Incluir o Produto -->
+
+    <Spinner
+        android:id="@+id/spinnerCategoria"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        app:layout_constraintStart_toStartOf="@+id/imagemEditText"
+        app:layout_constraintTop_toBottomOf="@+id/imagemEditText" />
+
     <Button
         android:id="@+id/salvarButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
         android:backgroundTint="#FF5722"
         android:text="Incluir Produto"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imagemEditText" />
 

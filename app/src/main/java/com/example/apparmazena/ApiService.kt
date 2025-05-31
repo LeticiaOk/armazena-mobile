@@ -2,6 +2,9 @@ package com.example.apparmazena
 
 import com.example.apparmazena.LoginActivity.LoginResponse
 import retrofit2.Call
+import com.example.apparmazena.Usuario.UsuarioCadastroRequest
+import com.example.apparmazena.Usuario.UsuarioCadastroResponse
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -16,6 +19,11 @@ interface ApiService {
         @Query("senha") senha: String
     ): Call<List<LoginResponse>> // Recebe no formato lista de LoginResponse
 
+    @POST("/armazena_api/usuario_cadastro.php")
+    fun cadastrarUsuario(@Body requestBody: UsuarioCadastroRequest): Call<UsuarioCadastroResponse>
+
+    @GET("/armazena_api/categoria.php")
+    fun getCategorias(): Call<List<Categoria>>
 
     @GET("/armazena_api/produto.php")
     fun getProdutos(): Call<List<Produto>>
@@ -26,7 +34,8 @@ interface ApiService {
         @Field("PRODUTO_NOME") nome: String,
         @Field("PRODUTO_DESC") descricao: String,
         @Field("PRODUTO_PRECO") preco: String,
-        @Field("PRODUTO_IMAGEM_URL") imagem: String
+        @Field("PRODUTO_IMAGEM_URL") imagem: String,
+        @Field("CATEGORIA_ID") categoriaId: Int
     ): Call<Void>
 
     @FormUrlEncoded
@@ -36,7 +45,8 @@ interface ApiService {
         @Field("PRODUTO_NOME") nome: String,
         @Field("PRODUTO_DESC") descricao: String,
         @Field("PRODUTO_PRECO") preco: String,
-        @Field("PRODUTO_IMAGEM_URL") imagem: String
+        @Field("PRODUTO_IMAGEM_URL") imagem: String,
+        @Field("CATEGORIA_ID") categoriaId: Int
     ): Call<Void>
 
     @FormUrlEncoded

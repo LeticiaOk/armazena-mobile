@@ -14,8 +14,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -45,8 +43,16 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         val loginButton: Button = findViewById(R.id.loginButton)
+        val registerButton: Button = findViewById(R.id.registerButton)
+
         loginButton.setOnClickListener {
             blockLogin()
+        }
+
+        registerButton.setOnClickListener {
+            val intent = Intent(this, UsuarioCadastroActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -55,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString().trim()
         // Momento do "build" da retrofit, passando a URL base.
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.3/")
+            .baseUrl("http://192.168.12.153/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)

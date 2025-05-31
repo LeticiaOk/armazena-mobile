@@ -47,6 +47,9 @@ class ProdutoAdapter(private val dataSet: List<Produto>, private val apiService:
             intent.putExtra("PRODUTO_DESC", produto.PRODUTO_DESC)
             intent.putExtra("PRODUTO_PRECO", produto.PRODUTO_PRECO)
             intent.putExtra("PRODUTO_IMAGEM_URL", produto.PRODUTO_IMAGEM_URL)
+            //+
+            intent.putExtra("CATEGORIA_ID", produto.CATEGORIA_ID)
+            //-
             it.context.startActivity(intent)
         }
 

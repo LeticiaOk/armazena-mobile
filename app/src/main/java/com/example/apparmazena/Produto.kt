@@ -5,5 +5,6 @@ data class Produto(
     val PRODUTO_NOME: String,
     val PRODUTO_DESC: String,
     val PRODUTO_PRECO: String,
-    val PRODUTO_IMAGEM_URL: String
+    val PRODUTO_IMAGEM_URL: String,
+    val CATEGORIA_ID: Int
 )

@@ -16,13 +16,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import android.view.Menu
+import android.view.MenuItem
+
 
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
 
 class ProdutosActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -43,12 +42,6 @@ class ProdutosActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewProdutos)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        addProductButton = findViewById(R.id.incluirProdutoButton) // Inicializando o botÃƒÂ£o
-        btnLogout = findViewById(R.id.btnLogout)
-
-        btnLogout.setOnClickListener {
-            logout()
-        }
 
         // ConfiguraÇÃo do Logging Interceptor
         val logging = HttpLoggingInterceptor { message ->
@@ -67,7 +60,7 @@ class ProdutosActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.3/")
+            .baseUrl("http://192.168.12.153/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -89,10 +82,32 @@ class ProdutosActivity : AppCompatActivity() {
             }
         })
 
-        // Adicionar listener para o botão de adicionar produto
-        addProductButton.setOnClickListener {
-            val intent = Intent(this, IncluirProdutoActivity::class.java)
-            startActivity(intent)  // Abrir a tela de inclusão de produto
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add -> {
+                val intent = Intent(this, IncluirProdutoActivity::class.java)
+                startActivity(intent)  // Abrir a tela de inclusão de produto
+                true
+            }
+            R.id.action_about -> {
+                // Ação ao clicar em "Configurações"
+                Log.d("Menu", "Configurações clicadas")
+                true
+            }
+            R.id.action_logout -> {
+                // Ação ao clicar em "Sobre"
+                logout()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -116,3 +131,4 @@ class ProdutosActivity : AppCompatActivity() {
     }
 
 }
+

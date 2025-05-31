@@ -2,8 +2,10 @@ package com.example.apparmazena
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +26,12 @@ class EditarProdutoActivity : AppCompatActivity() {
     private lateinit var imagemEditText: EditText
     private lateinit var salvarButton: Button
 
+    //+
+    private lateinit var spinnerCategoria: Spinner
+    private var listaCategorias: List<Categoria> = listOf()
+    private var categoriaSelecionadaId: Int = 0
+    // -
+
     private var produtoId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +48,9 @@ class EditarProdutoActivity : AppCompatActivity() {
         descricaoEditText = findViewById(R.id.descricaoEditText)
         precoEditText = findViewById(R.id.precoEditText)
         imagemEditText = findViewById(R.id.imagemEditText)
+        //+
+        spinnerCategoria = findViewById(R.id.spinnerCategoria)
+        //-
         salvarButton = findViewById(R.id.salvarButton)
 
         // Resgatar os dados passados pela Intent
@@ -48,23 +59,58 @@ class EditarProdutoActivity : AppCompatActivity() {
         descricaoEditText.setText(intent.getStringExtra("PRODUTO_DESC"))
         precoEditText.setText(intent.getStringExtra("PRODUTO_PRECO"))
         imagemEditText.setText(intent.getStringExtra("PRODUTO_IMAGEM_URL"))
+        //+
+        categoriaSelecionadaId = intent.getIntExtra("CATEGORIA_ID", 0)
+        // -
+
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.3/") // Substitua pelo seu endereÃƒÂ§o base
+            .baseUrl("http://192.168.12.153/") // Substitua pelo seu endereÃƒÂ§o base
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
 
+        //+
+        apiService.getCategorias().enqueue(object : Callback<List<Categoria>> {
+            override fun onResponse(call: Call<List<Categoria>>, response: Response<List<Categoria>>) {
+                if (response.isSuccessful) {
+                    listaCategorias = response.body() ?: listOf()
+                    val nomes = listaCategorias.map { it.CATEGORIA_NOME }
+                    val adapter = ArrayAdapter(this@EditarProdutoActivity, android.R.layout.simple_spinner_item, nomes)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerCategoria.adapter = adapter
+
+                    // Selecionar a categoria atual do produto
+                    val index = listaCategorias.indexOfFirst { it.CATEGORIA_ID == categoriaSelecionadaId }
+                    if (index >= 0) {
+                        spinnerCategoria.setSelection(index)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<Categoria>>, t: Throwable) {
+                Toast.makeText(this@EditarProdutoActivity, "Erro ao carregar categorias", Toast.LENGTH_SHORT).show()
+            }
+        })
+        //-
+
         salvarButton.setOnClickListener {
+            //+
+            val categoriaIdSelecionada = listaCategorias[spinnerCategoria.selectedItemPosition].CATEGORIA_ID
+            //-
+
             // Atualizar produto via API
             val produtoAtualizado = Produto(
                 produtoId,
                 nomeEditText.text.toString(),
                 descricaoEditText.text.toString(),
                 precoEditText.text.toString(),
-                imagemEditText.text.toString()
+                imagemEditText.text.toString(),
+                //+
+                categoriaIdSelecionada
+                //-
             )
 
             apiService.editarProduto(
@@ -72,7 +118,10 @@ class EditarProdutoActivity : AppCompatActivity() {
                 produtoAtualizado.PRODUTO_NOME,
                 produtoAtualizado.PRODUTO_DESC,
                 produtoAtualizado.PRODUTO_PRECO,
-                produtoAtualizado.PRODUTO_IMAGEM_URL
+                produtoAtualizado.PRODUTO_IMAGEM_URL,
+                //+
+                produtoAtualizado.CATEGORIA_ID
+                //-
             ).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {

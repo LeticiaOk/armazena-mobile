@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_add"
+        app:showAsAction="never"
+        android:orderInCategory="100"
+        android:title="Adicionar produto" />
+
+    <item
+        android:id="@+id/action_quest"
+        app:showAsAction="never"
+        android:orderInCategory="100"
+        android:title="Dúvidas" />
+
+    <item
+        android:id="@+id/action_contact"
+        app:showAsAction="never"
+        android:orderInCategory="100"
+        android:title="Contato" />
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:title="Sobre"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_logout"
+        app:showAsAction="never"
+        android:orderInCategory="100"
+        android:title="Sair" />
+
+</menu>
