@@ -66,7 +66,7 @@ class EditarProdutoActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http:///") // Substitua pelo seu endereÃƒÂ§o base
+            .baseUrl("http://192.168.1.2/") // Substitua pelo seu endereÃƒÂ§o base
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

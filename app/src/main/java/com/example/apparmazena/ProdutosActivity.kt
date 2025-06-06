@@ -60,7 +60,7 @@ class ProdutosActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http:///")
+            .baseUrl("http://192.168.1.2/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -97,9 +97,14 @@ class ProdutosActivity : AppCompatActivity() {
                 startActivity(intent)  // Abrir a tela de inclusão de produto
                 true
             }
+            R.id.action_contact -> {
+                val intent = Intent(this, ContatoActivity::class.java)
+                startActivity(intent)  // Abrir a tela de inclusão de produto
+                true
+            }
             R.id.action_about -> {
-                // Ação ao clicar em "Configurações"
-                Log.d("Menu", "Configurações clicadas")
+                val intent = Intent(this, SobreActivity::class.java)
+                startActivity(intent)  // Abrir a tela de inclusão de produto
                 true
             }
             R.id.action_logout -> {
@@ -126,7 +131,7 @@ class ProdutosActivity : AppCompatActivity() {
 
     private fun logout() {
         getSharedPreferences("UserPrefs", MODE_PRIVATE).edit().clear().apply()
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 

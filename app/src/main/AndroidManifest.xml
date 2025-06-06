@@ -16,9 +16,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ContatoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SobreActivity"
+            android:exported="false" />
+        <activity
             android:name=".UsuarioCadastroActivity"
             android:exported="false" />
-
         <activity
             android:name=".IncluirProdutoActivity"
             android:exported="false" />
@@ -36,6 +41,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
