@@ -98,7 +98,7 @@ class UsuarioCadastroActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.12.153/")
+            .baseUrl("http:///")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

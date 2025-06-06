@@ -50,7 +50,7 @@ class IncluirProdutoActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.12.153/") // Substitua pelo seu endereÃƒÂ§o base
+            .baseUrl("http:///") // Substitua pelo seu endereÃƒÂ§o base
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

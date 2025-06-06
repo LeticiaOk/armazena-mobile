@@ -16,8 +16,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        // SHARED PREFERENCES
+        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("USUARIO_ID", -1)
+
+        if (usuarioId != -1) {
+            val intent = Intent(this, ProdutosActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
         val cadastroButton = findViewById<Button>(R.id.cadastroChooseButton)
         val loginButton = findViewById<Button>(R.id.loginChooseButton)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)

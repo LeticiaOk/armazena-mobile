@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         val password = passwordEditText.text.toString().trim()
         // Momento do "build" da retrofit, passando a URL base.
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.12.153/")
+            .baseUrl("http:///")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService = retrofit.create(ApiService::class.java)
@@ -96,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(this@LoginActivity, "Erro no login",
                         Toast.LENGTH_LONG).show()
-                }
+                    }
             }
             override fun onFailure(call: Call<List<LoginResponse>>, t: Throwable) {
                 Toast.makeText(this@LoginActivity, "Erro: ${t.message}",
