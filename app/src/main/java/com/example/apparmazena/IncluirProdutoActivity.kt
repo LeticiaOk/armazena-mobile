@@ -24,6 +24,8 @@ class IncluirProdutoActivity : AppCompatActivity() {
     private lateinit var descricaoEditText: EditText
     private lateinit var precoEditText: EditText
     private lateinit var imagemEditText: EditText
+    //private lateinit var quantidadeEditText: EditText
+
     private lateinit var salvarButton: Button
     //+
     private lateinit var spinnerCategoria: Spinner
@@ -85,8 +87,10 @@ class IncluirProdutoActivity : AppCompatActivity() {
                 descricaoEditText.text.toString(),
                 precoEditText.text.toString(),
                 imagemEditText.text.toString(),
+
                 //+
-                categoriaSelecionada
+                categoriaSelecionada,
+                //quantidadeEditText.toString()
                 //-
             )
 
@@ -97,7 +101,8 @@ class IncluirProdutoActivity : AppCompatActivity() {
                 precoEditText.text.toString(),
                 imagemEditText.text.toString(),
                 //+
-                categoriaSelecionada
+                categoriaSelecionada,
+                //quantidadeEditText.toString()
                 //-
 
             ).enqueue(object : Callback<Void> {

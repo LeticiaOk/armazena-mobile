@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="21dp"
+        android:layout_marginBottom="15dp"
         android:backgroundTint="#E6E6E6"
         android:hint="URL da Imagem do Produto"
         android:minHeight="48dp"
@@ -75,10 +75,9 @@
         android:id="@+id/spinnerCategoria"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginBottom="44dp"
         app:layout_constraintBottom_toTopOf="@+id/salvarButton"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imagemEditText"
         app:layout_constraintTop_toBottomOf="@+id/imagemEditText" />
 
     <Button
@@ -98,13 +97,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="1dp"
         android:text="Novo produto"
         android:textColor="#FF5722"
         android:textSize="40sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/imageView6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -117,5 +116,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
         app:srcCompat="@drawable/add" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,6 +24,7 @@ class EditarProdutoActivity : AppCompatActivity() {
     private lateinit var descricaoEditText: EditText
     private lateinit var precoEditText: EditText
     private lateinit var imagemEditText: EditText
+    //private lateinit var quantidadeEditText: EditText
     private lateinit var salvarButton: Button
 
     //+
@@ -48,6 +49,7 @@ class EditarProdutoActivity : AppCompatActivity() {
         descricaoEditText = findViewById(R.id.descricaoEditText)
         precoEditText = findViewById(R.id.precoEditText)
         imagemEditText = findViewById(R.id.imagemEditText)
+        //quantidadeEditText = findViewById(R.id.quantidadeEditText)
         //+
         spinnerCategoria = findViewById(R.id.spinnerCategoria)
         //-
@@ -59,8 +61,11 @@ class EditarProdutoActivity : AppCompatActivity() {
         descricaoEditText.setText(intent.getStringExtra("PRODUTO_DESC"))
         precoEditText.setText(intent.getStringExtra("PRODUTO_PRECO"))
         imagemEditText.setText(intent.getStringExtra("PRODUTO_IMAGEM_URL"))
+
         //+
         categoriaSelecionadaId = intent.getIntExtra("CATEGORIA_ID", 0)
+        //quantidadeEditText.setText(intent.getStringExtra("PRODUTO_QTD"))
+
         // -
 
 
@@ -109,7 +114,8 @@ class EditarProdutoActivity : AppCompatActivity() {
                 precoEditText.text.toString(),
                 imagemEditText.text.toString(),
                 //+
-                categoriaIdSelecionada
+                categoriaIdSelecionada,
+                //quantidadeEditText.toString()
                 //-
             )
 
@@ -120,7 +126,8 @@ class EditarProdutoActivity : AppCompatActivity() {
                 produtoAtualizado.PRODUTO_PRECO,
                 produtoAtualizado.PRODUTO_IMAGEM_URL,
                 //+
-                produtoAtualizado.CATEGORIA_ID
+                produtoAtualizado.CATEGORIA_ID,
+                //produtoAtualizado.PRODUTO_QTD
                 //-
             ).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {

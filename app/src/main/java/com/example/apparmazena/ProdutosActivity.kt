@@ -97,6 +97,11 @@ class ProdutosActivity : AppCompatActivity() {
                 startActivity(intent)  // Abrir a tela de inclusão de produto
                 true
             }
+            R.id.action_quest -> {
+                val intent = Intent(this, DuvidasActivity::class.java)
+                startActivity(intent)  // Abrir a tela de inclusão de produto
+                true
+            }
             R.id.action_contact -> {
                 val intent = Intent(this, ContatoActivity::class.java)
                 startActivity(intent)  // Abrir a tela de inclusão de produto
