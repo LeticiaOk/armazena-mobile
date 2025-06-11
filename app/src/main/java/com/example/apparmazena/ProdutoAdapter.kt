@@ -19,10 +19,10 @@ class ProdutoAdapter(private val dataSet: List<Produto>, private val apiService:
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nome: TextView = view.findViewById(R.id.nomeProduto)
-        //val descricao: TextView = view.findViewById(R.id.descricaoProduto)
         val preco: TextView = view.findViewById(R.id.precoProduto)
         val imagem: ImageView = view.findViewById(R.id.imagemProduto)
-        //val quantidade: TextView = view.findViewById(R.id.quantidadeProduto)
+        val quantidade: TextView = view.findViewById(R.id.qtdProduto)
+
         val editarButton: Button = view.findViewById(R.id.editarButton)
         val deletarButton: Button = view.findViewById(R.id.deletarButton)
 
@@ -37,11 +37,12 @@ class ProdutoAdapter(private val dataSet: List<Produto>, private val apiService:
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val produto = dataSet[position]
         viewHolder.nome.text = produto.PRODUTO_NOME
-        //viewHolder.quantidade.text = produto.PRODUTO_QTD
+        viewHolder.quantidade.text = "Estoque: ${produto.PRODUTO_QTD}"
 
         //viewHolder.descricao.text = produto.PRODUTO_DESC
         viewHolder.preco.text = "R$ ${produto.PRODUTO_PRECO}"
         Picasso.get().load(produto.PRODUTO_IMAGEM_URL).into(viewHolder.imagem)
+
 
         // Passar os dados do produto para a Activity de edição
         viewHolder.editarButton.setOnClickListener {
@@ -53,7 +54,8 @@ class ProdutoAdapter(private val dataSet: List<Produto>, private val apiService:
             intent.putExtra("PRODUTO_IMAGEM_URL", produto.PRODUTO_IMAGEM_URL)
             //+
             intent.putExtra("CATEGORIA_ID", produto.CATEGORIA_ID)
-           // intent.putExtra("PRODUTO_QTD", produto.PRODUTO_QTD)
+            intent.putExtra("PRODUTO_QTD", produto.PRODUTO_QTD)
+
 
             //-
             it.context.startActivity(intent)

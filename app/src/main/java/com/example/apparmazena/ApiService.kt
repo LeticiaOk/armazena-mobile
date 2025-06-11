@@ -36,7 +36,7 @@ interface ApiService {
         @Field("PRODUTO_PRECO") preco: String,
         @Field("PRODUTO_IMAGEM_URL") imagem: String,
         @Field("CATEGORIA_ID") categoriaId: Int,
-        //@Field("PRODUTO_QTD") produto_qtd: String
+        @Field("PRODUTO_QTD") quantidade: Int // <- novo campo
 
     ): Call<Void>
 
@@ -49,8 +49,7 @@ interface ApiService {
         @Field("PRODUTO_PRECO") preco: String,
         @Field("PRODUTO_IMAGEM_URL") imagem: String,
         @Field("CATEGORIA_ID") categoriaId: Int,
-        //@Field("PRODUTO_QTD") produto_qtd: String
-
+        @Field("PRODUTO_QTD") quantidade: Int // <- novo campo
     ): Call<Void>
 
     @FormUrlEncoded

@@ -24,7 +24,8 @@ class EditarProdutoActivity : AppCompatActivity() {
     private lateinit var descricaoEditText: EditText
     private lateinit var precoEditText: EditText
     private lateinit var imagemEditText: EditText
-    //private lateinit var quantidadeEditText: EditText
+    private lateinit var quantidadeEditText: EditText
+
     private lateinit var salvarButton: Button
 
     //+
@@ -49,7 +50,9 @@ class EditarProdutoActivity : AppCompatActivity() {
         descricaoEditText = findViewById(R.id.descricaoEditText)
         precoEditText = findViewById(R.id.precoEditText)
         imagemEditText = findViewById(R.id.imagemEditText)
-        //quantidadeEditText = findViewById(R.id.quantidadeEditText)
+        quantidadeEditText = findViewById(R.id.quantidadeEditText)
+        quantidadeEditText.setText(intent.getIntExtra("PRODUTO_QTD", 0).toString())
+
         //+
         spinnerCategoria = findViewById(R.id.spinnerCategoria)
         //-
@@ -104,6 +107,7 @@ class EditarProdutoActivity : AppCompatActivity() {
         salvarButton.setOnClickListener {
             //+
             val categoriaIdSelecionada = listaCategorias[spinnerCategoria.selectedItemPosition].CATEGORIA_ID
+            val quantidade = quantidadeEditText.text.toString().toIntOrNull() ?: 0
             //-
 
             // Atualizar produto via API
@@ -115,7 +119,7 @@ class EditarProdutoActivity : AppCompatActivity() {
                 imagemEditText.text.toString(),
                 //+
                 categoriaIdSelecionada,
-                //quantidadeEditText.toString()
+                quantidade
                 //-
             )
 
@@ -127,7 +131,7 @@ class EditarProdutoActivity : AppCompatActivity() {
                 produtoAtualizado.PRODUTO_IMAGEM_URL,
                 //+
                 produtoAtualizado.CATEGORIA_ID,
-                //produtoAtualizado.PRODUTO_QTD
+                quantidade
                 //-
             ).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {

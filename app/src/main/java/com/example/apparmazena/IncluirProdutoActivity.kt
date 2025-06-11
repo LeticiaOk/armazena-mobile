@@ -24,7 +24,7 @@ class IncluirProdutoActivity : AppCompatActivity() {
     private lateinit var descricaoEditText: EditText
     private lateinit var precoEditText: EditText
     private lateinit var imagemEditText: EditText
-    //private lateinit var quantidadeEditText: EditText
+    private lateinit var quantidadeEditText: EditText
 
     private lateinit var salvarButton: Button
     //+
@@ -46,6 +46,8 @@ class IncluirProdutoActivity : AppCompatActivity() {
         precoEditText = findViewById(R.id.precoEditText)
         imagemEditText = findViewById(R.id.imagemEditText)
         salvarButton = findViewById(R.id.salvarButton)
+        quantidadeEditText = findViewById(R.id.quantidadeEditText)
+
         //+
         spinnerCategoria = findViewById(R.id.spinnerCategoria)
         //-
@@ -79,6 +81,8 @@ class IncluirProdutoActivity : AppCompatActivity() {
         salvarButton.setOnClickListener {
             //+
             val categoriaSelecionada = listaCategorias[spinnerCategoria.selectedItemPosition].CATEGORIA_ID
+            val quantidade = quantidadeEditText.text.toString().toIntOrNull() ?: 0
+
             //-
 
             val novoProduto = Produto(
@@ -90,7 +94,7 @@ class IncluirProdutoActivity : AppCompatActivity() {
 
                 //+
                 categoriaSelecionada,
-                //quantidadeEditText.toString()
+                quantidade
                 //-
             )
 
@@ -102,7 +106,7 @@ class IncluirProdutoActivity : AppCompatActivity() {
                 imagemEditText.text.toString(),
                 //+
                 categoriaSelecionada,
-                //quantidadeEditText.toString()
+                quantidade
                 //-
 
             ).enqueue(object : Callback<Void> {
