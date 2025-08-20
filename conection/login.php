@@ -12,9 +12,13 @@ $options = [
 ];
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
+    $usuario = $_GET['usuario'] ?? '';
+    $senha = $_GET['senha'] ?? '';
     // Query para verificar as credenciais
-    $sql = "SELECT * FROM USUARIO";
+    $sql = "SELECT USUARIO_ID, USUARIO_NOME, USUARIO_EMAIL FROM USUARIO WHERE USUARIO_EMAIL = :usuario AND USUARIO_SENHA = :senha";
+
     $stmt = $pdo->prepare($sql);
+    $stmt->execute(['usuario' => $usuario, 'senha' => $senha]);
     $usuarios = $stmt->fetchAll();
     header('Content-Type: application/json');
     echo json_encode($usuarios);
