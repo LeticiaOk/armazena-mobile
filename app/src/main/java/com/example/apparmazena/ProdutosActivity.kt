@@ -60,7 +60,7 @@ class ProdutosActivity : AppCompatActivity() {
 
         // Configuração do Retrofit
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.2/")
+            .baseUrl("http://0.0.0.0/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
